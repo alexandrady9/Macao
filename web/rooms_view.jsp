@@ -2,6 +2,8 @@
          contentType="text/html; charset=windows-1256"
          pageEncoding="windows-1256"
          import="model.User" %>
+<%@ page import="model.Room" %>
+<%@ page import="java.util.List" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -14,19 +16,23 @@
     <title>Macao</title>
 </head>
 
+<% User user = (User) session.getAttribute("currentSessionUser"); %>
+<% List<Room> rooms = (List<Room>) session.getAttribute("rooms"); %>
+
 <body>
 <header class="logout">
-    <% User user = (User) session.getAttribute("currentSessionUser"); %>
     <a style="margin-right: 10px">Welcome   <%=user.getUsername() %></a>
     <button class="logout-button" type="submit" name="join">Logout</button>
 </header>
 <main class="main">
     <h1 class="room-title">Rooms</h1>
     <div class="card-container">
-        <div class="game-card">
-            <span class="number-players"> 2/6 </span>
-            <span class="join-button">Join</span>
-        </div>
+        <%for (int i = 0; i < rooms.size(); i++) {%>
+            <div class="game-card">
+                <span class="number-players"> <%=rooms.get(i).getJoinedUsers()%> / 6 </span>
+                <span class="join-button">Join</span>
+            </div>
+        <% } %>
     </div>
 </main>
 <footer class="footer">
