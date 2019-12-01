@@ -15,9 +15,9 @@
 </head>
 
 <body>
-<center>
+<div style="text-align: center;">
     Sorry, you are not a registered user! Please sign up first
-</center>
+</div>
 </body>
 
 </html>

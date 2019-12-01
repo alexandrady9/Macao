@@ -8,7 +8,7 @@
 
 <html>
 <head>
-    <link rel="stylesheet" href="style.css" type="text/css"/>
+    <link rel="stylesheet" href="login.css" type="text/css"/>
     <meta http-equiv="Content-Type" content="text/html; charset=windows-1256">
     <title>Login Page</title>
 </head>

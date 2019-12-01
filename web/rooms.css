@@ -1,0 +1,104 @@
+html {
+    height: 100%;
+}
+
+body {
+    margin: 10px 40px;
+    height: 100%;
+    background-color: rgba(236, 240, 241, 0.25);
+}
+
+.logout {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.logout-button {
+    padding: 4px 14px;
+    font-size: 14px;
+    background-color: #e74c3c;
+    cursor: pointer;
+    border: none;
+    color: white;
+    border-radius: 5px;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+}
+
+.room-title {
+    color: #e67e22;
+    font-weight: 600;
+}
+
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.game-card {
+    position: relative;
+    background-image: url('resources/card.jpg');
+    background-size: cover;
+    width: 300px;
+    height: 120px;
+    box-shadow: 0 0 3px #ccc;
+    margin: 20px;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+    border-radius: 5px;
+}
+
+.game-card:hover {
+    transform: scale(1.1);
+}
+
+.number-players {
+    position: absolute;
+    content: "";
+    color: white;
+    font-size: 20px;
+    top: 10px;
+    left: 10px;
+}
+
+.join-button {
+    position: absolute;
+    content: "";
+    color: #f1c40f;
+    font-size: 28px;
+    bottom: 41px;
+    left: 70px;
+}
+
+.footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.form {
+    position: absolute;
+}
+
+.new-game-button {
+    position: absolute;
+    content: "";
+    bottom: 30px;
+    padding: 10px 40px;
+    font-size: 18px;
+    font-weight: 600;
+    background-color: #27ae60;
+    cursor: pointer;
+    border: none;
+    color: white;
+    border-radius: 5px;
+}
+
+:focus {
+    outline: none;
+}
