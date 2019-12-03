@@ -2,14 +2,14 @@ package connection;
 import java.sql.*;
 
 
-public class ConnectionDB {
+class ConnectionDB {
     private static ConnectionDB connectionDB = null;
 
     private static Connection myConnection = null;
 
     private ConnectionDB () { }
 
-    public static ConnectionDB getInstance() {
+    static ConnectionDB getInstance() {
         if (connectionDB == null) {
             connectionDB = new ConnectionDB();
         }
@@ -17,7 +17,7 @@ public class ConnectionDB {
         return connectionDB;
     }
 
-    public Connection createConnection() {
+    Connection createConnection() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             myConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/macao", "root", "root");

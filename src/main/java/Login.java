@@ -17,8 +17,7 @@ public class Login extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) {
 
-        try
-        {
+        try {
             User user = new User();
 
             user.setUsername(request.getParameter("username"));
@@ -33,11 +32,11 @@ public class Login extends HttpServlet {
                     add(new Room(5, 0, 2));
                 }};
 
+            /// TODO: 12/3/2019 de luat lista de camere din baza de date
+
             Utils utils = new Utils();
 
-            if (utils.checkLogin(user.getUsername(), user.getPassword()))
-            //if(user.getUsername().equals("diana"))
-            {
+            if (utils.checkLogin(user.getUsername(), user.getPassword())) {
 
                 HttpSession session = request.getSession(true);
                 session.setAttribute("currentSessionUser",user);
@@ -50,9 +49,8 @@ public class Login extends HttpServlet {
         }
 
 
-        catch (Throwable theException)
-        {
-            System.out.println(theException);
+        catch (Throwable theException) {
+            System.out.println(theException.getMessage());
         }
     }
 }

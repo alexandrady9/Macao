@@ -1,5 +1,6 @@
 package connection;
 
+import model.Room;
 import model.User;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,6 +12,7 @@ import java.util.Objects;
 
 public class Utils {
     private static List<User> users = new ArrayList<>();
+    private static List<Room> rooms = new ArrayList<>();
 
     public Utils() {
         getUsers();
@@ -36,12 +38,33 @@ public class Utils {
         }
     }
 
+    public void getRooms() {
+        try {
+            Statement myStatement = Objects.requireNonNull(ConnectionDB.getInstance().createConnection()).createStatement();
+            String sqlInsert = "SELECT * from room";
+
+            ResultSet rs = myStatement.executeQuery(sqlInsert);
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                int joinedUsers = rs.getInt("joinedUsers");
+                int hostedBy = rs.getInt("hostedBy");
+                Room room = new Room(id, joinedUsers, hostedBy);
+                rooms.add(room);
+            }
+            rs.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     /**
      * validation for login
      *
      * @param username
      * @param password
-     * @return current user
+     * @return if exists
      */
     public boolean checkLogin(String username, String password) {
         for (User user : users) {

@@ -1,5 +1,4 @@
-import model.Room;
-import model.User;
+
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -8,30 +7,26 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
-@WebServlet(name = "rooms",
-        urlPatterns = {"/rooms"},
-        loadOnStartup = 1)
+@WebServlet("/rooms")
 public class Rooms extends HttpServlet {
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) {
 
-        try
-        {
-
-            System.out.println(request);
-            Room room = (Room) request.getSession().getAttribute("room");
-
-            System.out.println(room.getHostedBy());
+        try {
+            String roomId = request.getParameter("roomId");
+            if(roomId == null) {
+                /// TODO: 12/3/2019 aici intra cand apasam pe new-game, noi trebui sa adaugam o noua camera in baza de date cu hostul fiind userul curent
+            }
 
             HttpSession session = request.getSession(true);
             session.setAttribute("currentSessionUser", request.getSession().getAttribute("currentSessionUser"));
+            session.setAttribute("roomId", roomId);
             response.sendRedirect("game.jsp");
         }
 
 
-        catch (Throwable theException)
-        {
-            System.out.println(theException);
+        catch (Throwable theException) {
+            System.out.println(theException.getMessage());
         }
     }
 }
