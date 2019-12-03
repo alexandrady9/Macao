@@ -22,16 +22,20 @@
 <body>
 <header class="logout">
     <a style="margin-right: 10px">Welcome   <%=user.getUsername() %></a>
-    <button class="logout-button" type="submit" name="join">Logout</button>
+    <a href="index.jsp" class="logout-button" type="submit" name="join">Logout</a>
 </header>
 <main class="main">
     <h1 class="room-title">Rooms</h1>
     <div class="card-container">
         <%for (int i = 0; i < rooms.size(); i++) {%>
-            <div class="game-card">
-                <span class="number-players"> <%=rooms.get(i).getJoinedUsers()%> / 6 </span>
+        <form action="rooms" method="get">
+            <button type="submit" value="card" class="game-card">
+                <%Room room = rooms.get(i);
+                session.setAttribute("room", room);%>
+                <span class="number-players"> <%=room.getJoinedUsers()%> / 6 </span>
                 <span class="join-button">Join</span>
-            </div>
+            </button>
+        </form>
         <% } %>
     </div>
 </main>

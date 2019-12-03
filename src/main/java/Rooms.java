@@ -17,8 +17,14 @@ public class Rooms extends HttpServlet {
 
         try
         {
+
+            System.out.println(request);
+            Room room = (Room) request.getSession().getAttribute("room");
+
+            System.out.println(room.getHostedBy());
+
             HttpSession session = request.getSession(true);
-            session.setAttribute("currentSessionUser", "diana");
+            session.setAttribute("currentSessionUser", request.getSession().getAttribute("currentSessionUser"));
             response.sendRedirect("game.jsp");
         }
 
