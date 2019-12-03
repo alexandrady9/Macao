@@ -19,7 +19,7 @@ public class Rooms extends HttpServlet {
         {
             HttpSession session = request.getSession(true);
             session.setAttribute("currentSessionUser", "diana");
-            response.sendRedirect("invalidLogin.jsp");
+            response.sendRedirect("game.jsp");
         }
 
 

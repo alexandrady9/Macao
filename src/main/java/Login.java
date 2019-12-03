@@ -33,10 +33,10 @@ public class Login extends HttpServlet {
                     add(new Room(5, 0, 2));
                 }};
 
-            //Utils utils = new Utils();
+            Utils utils = new Utils();
 
-            //if (utils.checkLogin(user.getUsername(), user.getPassword()))
-            if(user.getUsername().equals("diana"))
+            if (utils.checkLogin(user.getUsername(), user.getPassword()))
+            //if(user.getUsername().equals("diana"))
             {
 
                 HttpSession session = request.getSession(true);

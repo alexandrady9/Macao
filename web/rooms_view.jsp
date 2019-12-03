@@ -36,7 +36,9 @@
     </div>
 </main>
 <footer class="footer">
-    <button class="new-game-button" type="submit" name="newGame">New Game</button>
+    <form class="new-game-form" action="rooms" method="get">
+        <button class="new-game-button" type="submit" name="newGame">New Game</button>
+    </form>
 </footer>
 </body>
 

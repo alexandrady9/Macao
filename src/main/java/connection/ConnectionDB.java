@@ -20,7 +20,7 @@ public class ConnectionDB {
     public Connection createConnection() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            myConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/macao?useSSL=false", "root", "root");
+            myConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/macao", "root", "root");
         } catch (SQLException ex) {
             ex.printStackTrace();
             System.out.println("CONNECTION FAILED");
