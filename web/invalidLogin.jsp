@@ -16,7 +16,7 @@
 
 <body>
 <div style="text-align: center;">
-    Sorry, you are not a registered user! Please sign up first
+    Sorry, you are not a registered user!
 </div>
 </body>
 

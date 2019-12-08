@@ -18,7 +18,7 @@ import java.util.List;
         loadOnStartup = 1)
 public class Login extends HttpServlet {
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) {
 
         try {
             User user = new User();
@@ -32,16 +32,18 @@ public class Login extends HttpServlet {
                 add(1); add(2); add(3); // am adaugat niste carti harcodate, sa vedem designul
             }})));
 
-            List<Room> rooms = new ArrayList<>() {
-                {
-                    add(new Room(1, 2, UserCardsRepository.getInstance().getUsersCardsForCurrentRoom(1).size()));
-                    add(new Room(2, 1, UserCardsRepository.getInstance().getUsersCardsForCurrentRoom(2).size()));
-                    add(new Room(3, 5, UserCardsRepository.getInstance().getUsersCardsForCurrentRoom(3).size()));
-                    add(new Room(4, 5, UserCardsRepository.getInstance().getUsersCardsForCurrentRoom(4).size()));
-                    add(new Room(5, 0, UserCardsRepository.getInstance().getUsersCardsForCurrentRoom(5).size()));
-                }};
+//            List<Room> rooms = new ArrayList<>() {
+//                {
+//                    add(new Room(1, 2, UserCardsRepository.getInstance().getUsersCardsForCurrentRoom(1).size()));
+//                    add(new Room(2, 1, UserCardsRepository.getInstance().getUsersCardsForCurrentRoom(2).size()));
+//                    add(new Room(3, 5, UserCardsRepository.getInstance().getUsersCardsForCurrentRoom(3).size()));
+//                    add(new Room(4, 5, UserCardsRepository.getInstance().getUsersCardsForCurrentRoom(4).size()));
+//                    add(new Room(5, 0, UserCardsRepository.getInstance().getUsersCardsForCurrentRoom(5).size()));
+//                }};
+//
+//            /// TODO: 12/3/2019 de luat lista de camere din baza de date
 
-            /// TODO: 12/3/2019 de luat lista de camere din baza de date
+            List<Room> rooms = utils.getRooms();
 
             if (utils.checkLogin(user.getUsername(), user.getPassword()) != null) {
 
