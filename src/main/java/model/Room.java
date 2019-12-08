@@ -3,15 +3,15 @@ package model;
 public class Room {
 
     private long id;
-    private int joinedUsers;
     private int hostedBy;
+    private int joinedUsers;
 
     public Room() {}
 
-    public Room(long id, int joinedUsers, int hostedBy) {
+    public Room(long id, int hostedBy, int joinedUsers) {
         this.id = id;
-        this.joinedUsers = joinedUsers;
         this.hostedBy = hostedBy;
+        this.joinedUsers = joinedUsers;
     }
 
     public long getId() {

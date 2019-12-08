@@ -6,21 +6,16 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="84443f7b-ef5a-4ee8-bf05-28f6e18b9490" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/web/game.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/game.jsp" afterDir="false" />
+    <list default="true" id="84443f7b-ef5a-4ee8-bf05-28f6e18b9490" name="Default Changelist" comment="Get rooms from database. Created a new room when the &quot;New game&quot; button was pressed and updated the databse when a user joined.">
       <change beforePath="$PROJECT_DIR$/.idea/artifacts/macao_war_exploded.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/macao_war_exploded.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/macao.iml" beforeDir="false" afterPath="$PROJECT_DIR$/macao.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Login.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Rooms.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Rooms.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/connection/ConnectionDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/connection/ConnectionDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/connection/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/connection/Utils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/Room.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Room.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/game.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/game.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/index.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/index.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/login.css" beforeDir="false" afterPath="$PROJECT_DIR$/web/login.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/rooms_view.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/rooms_view.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/invalidLogin.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/web/invalidLogin.jsp" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -47,6 +42,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="MERGE" />
   </component>
   <component name="LogFilters">
     <option name="FILTER_ERRORS" value="false" />
@@ -61,7 +57,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1575233914096" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../ticketing-system" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="project.structure.last.edited" value="Artifacts" />
@@ -183,7 +179,26 @@
       <workItem from="1575362317462" duration="3071000" />
       <workItem from="1575373306820" duration="4268000" />
       <workItem from="1575377715279" duration="2620000" />
+      <workItem from="1575381604572" duration="7363000" />
+      <workItem from="1575446858028" duration="946000" />
+      <workItem from="1575800461963" duration="10944000" />
+      <workItem from="1575837846486" duration="3199000" />
     </task>
+    <task id="LOCAL-00001" summary="Added game page.">
+      <created>1575381725670</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1575381725670</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Resolved bug when connecting to db.">
+      <created>1575385523498</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1575385523498</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -206,5 +221,22 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added game page." />
+    <MESSAGE value="Resolved bug when connecting to db." />
+    <MESSAGE value="Get rooms from database. Created a new room when the &quot;New game&quot; button was pressed and updated the databse when a user joined." />
+    <option name="LAST_COMMIT_MESSAGE" value="Get rooms from database. Created a new room when the &quot;New game&quot; button was pressed and updated the databse when a user joined." />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/connection/ConnectionDB.java</url>
+          <line>21</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

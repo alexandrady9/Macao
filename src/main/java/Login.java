@@ -15,7 +15,7 @@ import java.util.List;
         loadOnStartup = 1)
 public class Login extends HttpServlet {
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) {
 
         try {
             User user = new User();
@@ -23,18 +23,8 @@ public class Login extends HttpServlet {
             user.setUsername(request.getParameter("username"));
             user.setPassword(request.getParameter("password"));
 
-            List<Room> rooms = new ArrayList<Room>() {
-                {
-                    add(new Room(1, 2, 3));
-                    add(new Room(2, 1, 3));
-                    add(new Room(3, 5, 2));
-                    add(new Room(4, 5, 2));
-                    add(new Room(5, 0, 2));
-                }};
-
-            /// TODO: 12/3/2019 de luat lista de camere din baza de date
-
             Utils utils = new Utils();
+            List<Room> rooms = utils.getRooms();
 
             if (utils.checkLogin(user.getUsername(), user.getPassword())) {
 

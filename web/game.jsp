@@ -21,16 +21,16 @@
         <div></div>
     </div>
     <div class="game">
-        <img height="850" width="1332" src="resources/card.jpg">
+        <img height="50px" width="100px" src="resources/card.jpg">
     </div>
 </main>
 <footer>
     <div class="cards-container">
-        <img height="850" width="1332" src="resources/card.jpg">
-        <img height="850" width="1332" src="resources/card.jpg">
-        <img height="850" width="1332" src="resources/card.jpg">
-        <img height="850" width="1332" src="resources/card.jpg">
-        <img height="850" width="1332" src="resources/card.jpg">
+<%--        <img height="850" width="1332" src="resources/card.jpg">--%>
+<%--        <img height="850" width="1332" src="resources/card.jpg">--%>
+<%--        <img height="850" width="1332" src="resources/card.jpg">--%>
+<%--        <img height="850" width="1332" src="resources/card.jpg">--%>
+<%--        <img height="850" width="1332" src="resources/card.jpg">--%>
     </div>
 </footer>
 </body>

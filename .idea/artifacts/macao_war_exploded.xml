@@ -7,9 +7,6 @@
         <element id="directory" name="classes">
           <element id="module-output" name="macao" />
         </element>
-        <element id="directory" name="lib">
-          <element id="library" level="project" name="Maven: mysql:mysql-connector-java:8.0.13" />
-        </element>
       </element>
     </root>
   </artifact>
