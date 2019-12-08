@@ -10,7 +10,6 @@ public class Game extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) {
 
         try {
-            /// TODO: 12/3/2019 Generate carti, afisare cartile pe care le are
         }
 
 

@@ -1,34 +1,135 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
 .main-container {
     display: flex;
     flex-direction: column;
+    height: 100%;
 }
 
 .info {
+    margin-top: 30px;
+    align-items: center;
+    justify-content: center;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+}
+
+.game-wrapper {
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.users {
+}
+
+.users table {
+    border: none;
 }
 
 .game {
-    width: 100%;
-    height: 500px;
+}
+
+.card-game {
+    position: relative;
+    background-image: url('resources/empty-card.png');
+    background-size: cover;
+    width: 180px;
+    height: 180px;
+    box-shadow: 0 0 3px #ccc;
+    transition: all .2s ease-in-out;
+    border-radius: 5px;
+}
+
+.card-game:hover {
+    transform: scale(1.1);
+}
+
+.card-game-type {
+    position: absolute;
+    content: "";
+    color: #EF3B3A;
+    font-size: 30px;
+    left: 80px;
+    bottom: 68px;
+}
+
+.deck {
+
+}
+
+.actions-wrapper {
     display: flex;
+    justify-content: flex-end;
     align-items: center;
-    justify-content: center;
+    margin-bottom: 140px;
+    margin-right: 90px;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.actions button {
+    width: 100px;
+    height: 35px;
+    box-shadow: 0 0 2px #ccc;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+    border-radius: 7px;
+    border: 1px solid transparent;
+    margin: 8px;
+    background-color: #17a2b8;
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.actions button:hover {
+    transform: scale(1.1);
+    background-color: #2980b9;
 }
 
 footer {
     position: absolute;
     content: "";
     bottom: 0;
-    left: 40%;
+    left: 32%;
 }
 
 .cards-container {
     display: flex;
+    align-items: center;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
-.cards-container img {
-    margin: 10px;
+.card-user {
+    position: relative;
+    width: 90px;
+    height: 50px;
+    box-shadow: 0 0 3px #ccc;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+    border-radius: 5px;
+    margin: 6px;
+}
+
+.card-user:hover {
+    transform: scale(1.1);
+}
+
+.card-user-type {
+    position: absolute;
+    content: "";
+    color: #EF3B3A;
+    font-size: 20px;
+    bottom: 15px;
+    left: 38px;
 }

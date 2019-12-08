@@ -1,6 +1,9 @@
 import connection.Utils;
 import model.Room;
 import model.User;
+import model.UserCards;
+import repository.UserCardsRepository;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,27 +22,31 @@ public class Login extends HttpServlet {
 
         try {
             User user = new User();
+            Utils utils = new Utils();
 
             user.setUsername(request.getParameter("username"));
             user.setPassword(request.getParameter("password"));
 
-            List<Room> rooms = new ArrayList<Room>() {
+            List<User> users = Utils.users;
+            users.forEach(user1 -> UserCardsRepository.getInstance().add(new UserCards(user1.getIdRoom(), user1, new ArrayList<>() {{
+                add(1); add(2); add(3); // am adaugat niste carti harcodate, sa vedem designul
+            }})));
+
+            List<Room> rooms = new ArrayList<>() {
                 {
-                    add(new Room(1, 2, 3));
-                    add(new Room(2, 1, 3));
-                    add(new Room(3, 5, 2));
-                    add(new Room(4, 5, 2));
-                    add(new Room(5, 0, 2));
+                    add(new Room(1, 2, UserCardsRepository.getInstance().getUsersCardsForCurrentRoom(1).size()));
+                    add(new Room(2, 1, UserCardsRepository.getInstance().getUsersCardsForCurrentRoom(2).size()));
+                    add(new Room(3, 5, UserCardsRepository.getInstance().getUsersCardsForCurrentRoom(3).size()));
+                    add(new Room(4, 5, UserCardsRepository.getInstance().getUsersCardsForCurrentRoom(4).size()));
+                    add(new Room(5, 0, UserCardsRepository.getInstance().getUsersCardsForCurrentRoom(5).size()));
                 }};
 
             /// TODO: 12/3/2019 de luat lista de camere din baza de date
 
-            Utils utils = new Utils();
-
-            if (utils.checkLogin(user.getUsername(), user.getPassword())) {
+            if (utils.checkLogin(user.getUsername(), user.getPassword()) != null) {
 
                 HttpSession session = request.getSession(true);
-                session.setAttribute("currentSessionUser",user);
+                session.setAttribute("currentSessionUser", utils.checkLogin(user.getUsername(), user.getPassword()));
                 session.setAttribute("rooms", rooms);
                 response.sendRedirect("rooms_view.jsp");
             }

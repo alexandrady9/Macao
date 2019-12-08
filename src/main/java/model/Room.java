@@ -4,14 +4,14 @@ public class Room {
 
     private long id;
     private int joinedUsers;
-    private int hostedBy;
+    private long idHost;
 
     public Room() {}
 
-    public Room(long id, int joinedUsers, int hostedBy) {
+    public Room(long id, long idHost, int joinedUsers) {
         this.id = id;
         this.joinedUsers = joinedUsers;
-        this.hostedBy = hostedBy;
+        this.idHost = idHost;
     }
 
     public long getId() {
@@ -30,12 +30,12 @@ public class Room {
         this.joinedUsers = joinedUsers;
     }
 
-    public int getHostedBy() {
-        return hostedBy;
+    public long getIdHost() {
+        return idHost;
     }
 
-    public void setHostedBy(int hostedBy) {
-        this.hostedBy = hostedBy;
+    public void setIdHost(long idHost) {
+        this.idHost = idHost;
     }
 }
 

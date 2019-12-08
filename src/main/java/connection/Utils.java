@@ -11,11 +11,12 @@ import java.util.Objects;
 
 
 public class Utils {
-    private static List<User> users = new ArrayList<>();
-    private static List<Room> rooms = new ArrayList<>();
+    public static List<User> users = new ArrayList<>();
+    public static List<Room> rooms = new ArrayList<>();
 
     public Utils() {
         getUsers();
+        getRooms();
     }
 
     private void getUsers() {
@@ -28,7 +29,8 @@ public class Utils {
                 int id = rs.getInt("id");
                 String name = rs.getString("username");
                 String password = rs.getString("password");
-                User user = new User(id, name, password);
+                int idRoom = rs.getInt("idRoom");
+                User user = new User(id, name, password, idRoom);
                 users.add(user);
             }
             rs.close();
@@ -66,12 +68,12 @@ public class Utils {
      * @param password
      * @return if exists
      */
-    public boolean checkLogin(String username, String password) {
+    public User checkLogin(String username, String password) {
         for (User user : users) {
             if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
-                return true;
+                return user;
             }
         }
-        return false;
+        return null;
     }
 }

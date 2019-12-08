@@ -8,13 +8,15 @@ public class User implements Serializable {
     private long id;
     private String username;
     private String password;
+    private long idRoom;
 
     public User() { }
 
-    public User(long id, String username, String password) {
+    public User(long id, String username, String password, long idRoom) {
         this.id = id;
         this.username = username;
         this.password = password;
+        this.idRoom = idRoom;
     }
 
     public long getId() {
@@ -39,5 +41,13 @@ public class User implements Serializable {
 
     public void setUsername(String newUsername) {
         username = newUsername;
+    }
+
+    public long getIdRoom() {
+        return idRoom;
+    }
+
+    public void setIdRoom(long idRoom) {
+        this.idRoom = idRoom;
     }
 }

@@ -20,8 +20,7 @@
 
 <body>
 <header class="logout">
-    <a style="margin-right: 10px">Welcome   <%=user.getUsername() %>
-    </a>
+    <a style="margin-right: 100px">Welcome   <%=user.getUsername() %></a>
     <a href="index.jsp" class="logout-button" type="submit" name="join">Logout</a>
 </header>
 <main class="main">
