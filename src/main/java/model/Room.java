@@ -8,9 +8,8 @@ public class Room {
 
     public Room() {}
 
-    public Room(long id, long idHost, int joinedUsers) {
+    public Room(long id, long idHost) {
         this.id = id;
-        this.joinedUsers = joinedUsers;
         this.idHost = idHost;
     }
 

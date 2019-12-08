@@ -49,6 +49,10 @@ public class GameCardsRepository implements Repository<GameCards> {
     }
 
     public GameCards getByRoomId(long idRoom) {
-        return gameCards.stream().filter(gameCards1 -> gameCards1.getRoom() == idRoom).findFirst().orElseThrow();
+        return gameCards
+                .stream()
+                .filter(gameCards1 -> gameCards1.getRoom() == idRoom)
+                .findFirst()
+                .orElseThrow();
     }
 }

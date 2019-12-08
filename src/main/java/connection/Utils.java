@@ -12,16 +12,17 @@ import java.util.Objects;
 
 
 public class Utils {
-    public static List<User> users = new ArrayList<>();
-    public static List<Room> rooms = new ArrayList<>();
+    private List<User> users = new ArrayList<>();
+    private List<Room> rooms = new ArrayList<>();
 
     public Utils() {
         getUsers();
         getRooms();
     }
 
-    private void getUsers() {
+    public List<User> getUsers() {
         try {
+            users.clear();
             Statement myStatement = Objects.requireNonNull(ConnectionDB.getInstance().createConnection()).createStatement();
             String sqlInsert = "SELECT * from user";
 
@@ -36,9 +37,13 @@ public class Utils {
             }
             rs.close();
 
+            return users;
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return null;
     }
 
     public List<Room> getRooms() {
@@ -50,9 +55,8 @@ public class Utils {
             ResultSet rs = myStatement.executeQuery(sqlInsert);
             while (rs.next()) {
                 int id = rs.getInt("id");
-                int hostedBy = rs.getInt("idHost");
-                int joinedUsers = rs.getInt("joinedUsers");
-                Room room = new Room(id, hostedBy, joinedUsers);
+                int idHost = rs.getInt("idHost");
+                Room room = new Room(id, idHost);
                 rooms.add(room);
             }
             rs.close();
@@ -81,22 +85,12 @@ public class Utils {
         return null;
     }
 
-    public long getUserId(String username) {
-        for (User user : users) {
-            if (user.getUsername().equals(username)) {
-                return user.getId();
-            }
-        }
-        return 0;
-    }
-
     public Room getRoom(long roomId) {
-        for (Room room : rooms) {
-            if (room.getId() == roomId) {
-                return room;
-            }
-        }
-        return null;
+        return rooms
+                .stream()
+                .filter(room -> room.getId() == roomId)
+                .findFirst()
+                .orElse(null);
     }
 
     public void createRoom(long idHost) {
@@ -109,6 +103,11 @@ public class Utils {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public Room getLastRoomCreated() {
+        getRooms();
+        return rooms.get(rooms.size() - 1);
     }
 
     public void joinRoom(long userId, long roomId) {

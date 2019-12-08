@@ -36,7 +36,7 @@
                 <tr><td></td></tr>
                 <%for (int i = 0; i < usersCards.size(); i++) { %>
                 <tr>
-                    <td>Jucatorul <%=i%> : <%=usersCards.get(i).getUser().getUsername()%></td>
+                    <td>Jucatorul <%=i+1%> : <%=usersCards.get(i).getUser().getUsername()%></td>
                 </tr>
                 <%}%>
             </table>

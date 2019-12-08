@@ -54,6 +54,7 @@ public class UserCardsRepository implements Repository<UserCards> {
         return userCards
                     .stream()
                     .filter(userCards1 -> userCards1.getUser().getId() == user.getId() && userCards1.getRoom() == idRoom)
-                    .findFirst().orElseThrow();
+                    .findFirst()
+                    .orElseThrow();
     }
 }
