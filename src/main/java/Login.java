@@ -1,4 +1,5 @@
 import connection.Utils;
+import model.GameCards;
 import model.Room;
 import model.User;
 import model.UserCards;
@@ -32,7 +33,7 @@ public class Login extends HttpServlet {
             List<User> users = utils.getUsers();
             users.forEach(user1 -> UserCardsRepository
                     .getInstance()
-                    .add(new UserCards(user1.getIdRoom(), user1, new ArrayList<>() {{
+                    .add(new UserCards(user1.getIdRoom(), user1, new ArrayList<Integer>() {{
                 add(1); add(2); add(3); // am adaugat niste carti harcodate, sa vedem designul
             }})));
 
@@ -43,6 +44,9 @@ public class Login extends HttpServlet {
                             .getUsersCardsForCurrentRoom(room.getId()).size()
                     )
             );
+            
+            /// TODO: 12/9/2019 arrayList = pachetul nostru de carti 
+            rooms.forEach(room -> GameCardsRepository.getInstance().add(new GameCards(room.getId(), 0, new ArrayList<>())));
 
             rooms.get(2).setJoinedUsers(6);
 

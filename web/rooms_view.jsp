@@ -20,7 +20,8 @@
 
 <body>
 <header class="logout">
-    <a style="margin-right: 100px">Welcome   <%=user.getUsername() %></a>
+    <a style="margin-right: 100px">Welcome   <%=user.getUsername() %>
+    </a>
     <a href="index.jsp" class="logout-button" type="submit" name="join">Logout</a>
 </header>
 <main class="main">
@@ -28,7 +29,7 @@
     <div class="card-container">
         <%for (int i = 0; i < rooms.size(); i++) {%>
         <%Room room = rooms.get(i);%>
-        <button type="submit" data-value2="<%=room.getJoinedUsers()%>" value="<%=room.getId()%>" class="join game-card">
+        <button type="submit" value="<%=room.getId()%>" class="join game-card">
             <span class="number-players"> <%=room.getJoinedUsers()%> / 6 </span>
             <span class="join-button">Join</span>
         </button>
@@ -48,41 +49,30 @@
 
 <script>
     var joinButton = document.getElementsByClassName("join");
-    var joinedUsers = joinButton.getAttribute("data-value2");
-
     var alertButton = document.getElementsByClassName("alert");
-
 
     Array.from(joinButton).forEach(function (button) {
         button.addEventListener('click', function () {
-            if (joinedUsers < 6) {
-                var value = button.value;
-                fetch('rooms?' + 'roomId=' + value, {
-                    method: "POST"
+            var value = button.value;
+            fetch('rooms?' + 'roomId=' + value, {
+                method: "POST"
+            })
+                .then(function (data) {
+                    window.location.href = data.url;
                 })
-                    .then(function (data) {
-                        window.location.href = data.url;
-                    })
-            }
-
-            else {
-                Array.from(alertButton).forEach(function (alert) {
-                    alert.style.opacity = "1";
-                })
-            }
         })
     });
 
     var closeButton = document.getElementsByClassName("close-error");
 
     Array.from(closeButton).forEach(function (close) {
-      close.addEventListener('click', function () {
-          var div = this.parentElement;
-          div.style.opacity = "0";
-          setTimeout(function () {
-              div.style.display = "none";
-          }, 600);
-      })
+        close.addEventListener('click', function () {
+            var div = this.parentElement;
+            div.style.opacity = "0";
+            setTimeout(function () {
+                div.style.display = "none";
+            }, 600);
+        })
     });
 
 </script>

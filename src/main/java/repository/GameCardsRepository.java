@@ -19,14 +19,7 @@ public class GameCardsRepository implements Repository<GameCards> {
         return instance;
     }
 
-    private List<GameCards> gameCards = new ArrayList<GameCards>() {{
-        add(new GameCards(1, 1, new ArrayList<Integer>(){{add(1); add(2);}} ));
-        add(new GameCards(2, 0, new ArrayList<Integer>(){{add(1); add(2);}} ));
-        add(new GameCards(3, 2, new ArrayList<Integer>(){{add(1); add(2);}} ));
-        add(new GameCards(4, 1, new ArrayList<Integer>() ));
-        add(new GameCards(5, 0, new ArrayList<Integer>(){{add(1); add(2); add(3);}} ));
-        add(new GameCards(6, 2, new ArrayList<Integer>() ));
-    }};
+    private List<GameCards> gameCards = new ArrayList<GameCards>();
 
     @Override
     public void add(GameCards item) {
@@ -53,6 +46,6 @@ public class GameCardsRepository implements Repository<GameCards> {
                 .stream()
                 .filter(gameCards1 -> gameCards1.getRoom() == idRoom)
                 .findFirst()
-                .orElseThrow();
+                .orElse(null);
     }
 }
