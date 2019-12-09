@@ -1,8 +1,5 @@
 import connection.Utils;
-import model.GameCards;
-import model.Room;
-import model.User;
-import model.UserCards;
+import model.*;
 import repository.GameCardsRepository;
 import repository.UserCardsRepository;
 
@@ -33,22 +30,19 @@ public class Login extends HttpServlet {
             List<User> users = utils.getUsers();
             users.forEach(user1 -> UserCardsRepository
                     .getInstance()
-                    .add(new UserCards(user1.getIdRoom(), user1, new ArrayList<Integer>() {{
-                add(1); add(2); add(3); // am adaugat niste carti harcodate, sa vedem designul
-            }})));
+                    .add(new UserCards(user1.getIdRoom(), user1, new ArrayList<>())));
 
             List<Room> rooms = utils.getRooms();
-            rooms.forEach(room -> room
-                    .setJoinedUsers(UserCardsRepository
-                            .getInstance()
-                            .getUsersCardsForCurrentRoom(room.getId()).size()
-                    )
-            );
+//            rooms.forEach(room -> room
+//                    .setJoinedUsers(UserCardsRepository
+//                            .getInstance()
+//                            .getUsersCardsForCurrentRoom(room.getId()).size()
+//                    )
+//            );
 
-            GameCards gameCards = new GameCards();
-            rooms.forEach(room -> GameCardsRepository.getInstance().add(new GameCards(room.getId(), 0, gameCards.getCards())));
+            rooms.forEach(room -> GameCardsRepository.getInstance().add(new GameCards(room.getId(), 0, GenerateDeck.generate())));
 
-            rooms.get(2).setJoinedUsers(6);
+            //rooms.get(2).setJoinedUsers(6);
 
             currentUser = utils.checkLogin(currentUser.getUsername(), currentUser.getPassword());
 
@@ -61,7 +55,6 @@ public class Login extends HttpServlet {
                 response.sendRedirect("invalidLogin.jsp");
             }
         }
-
 
         catch (Throwable theException) {
             System.out.println(theException.getMessage());

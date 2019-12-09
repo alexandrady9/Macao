@@ -13,7 +13,7 @@ import java.util.Objects;
 
 public class Utils {
     private List<User> users = new ArrayList<>();
-    private List<Room> rooms = new ArrayList<>();
+    public List<Room> rooms = new ArrayList<>();
 
     public Utils() {
         getUsers();
@@ -56,7 +56,8 @@ public class Utils {
             while (rs.next()) {
                 int id = rs.getInt("id");
                 int idHost = rs.getInt("idHost");
-                Room room = new Room(id, idHost);
+                int joinedUsers = rs.getInt("joinedUsers");
+                Room room = new Room(id, idHost, joinedUsers);
                 rooms.add(room);
             }
             rs.close();
@@ -98,6 +99,7 @@ public class Utils {
             Statement statement = Objects.requireNonNull(ConnectionDB.getInstance().createConnection()).createStatement();
             String query = "INSERT INTO room (`idHost`, `joinedUsers`) VALUES('" + idHost + "', '" + 1 + "')";
             statement.executeUpdate(query);
+
             statement.close();
 
         } catch (SQLException e) {

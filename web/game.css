@@ -3,6 +3,12 @@ html, body {
     margin: 0;
 }
 
+body {
+    margin: 10px 40px;
+    height: 100%;
+    background-color: rgba(236, 240, 241, 0.25);
+}
+
 .main-container {
     display: flex;
     flex-direction: column;
@@ -14,6 +20,17 @@ html, body {
     align-items: center;
     justify-content: center;
     display: flex;
+}
+
+.finish-button {
+    padding: 4px 14px;
+    font-size: 14px;
+    background-color: #e74c3c;
+    cursor: pointer;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
 }
 
 .game-wrapper {
@@ -68,6 +85,22 @@ html, body {
     align-items: center;
     margin-bottom: 140px;
     margin-right: 90px;
+}
+
+.start-game-form {
+    position: absolute;
+    content: "";
+    bottom: 20px; }
+
+.start-game-button {
+    padding: 10px 40px;
+    font-size: 18px;
+    font-weight: 600;
+    background-color: #27ae60;
+    cursor: pointer;
+    border: none;
+    color: white;
+    border-radius: 5px;
 }
 
 .actions {

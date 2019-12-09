@@ -8,12 +8,12 @@ public class UserCards {
 
     private User user;
 
-    private List<Integer> cards;
+    private List<Card> cards;
 
     public UserCards() {
     }
 
-    public UserCards(long idRoom, User user, List<Integer> cards) {
+    public UserCards(long idRoom, User user, List<Card> cards) {
         this.idRoom = idRoom;
         this.user = user;
         this.cards = cards;
@@ -35,11 +35,11 @@ public class UserCards {
         this.user = user;
     }
 
-    public List<Integer> getCards() {
+    public List<Card> getCards() {
         return cards;
     }
 
-    public void setCards(List<Integer> cards) {
+    public void setCards(List<Card> cards) {
         this.cards = cards;
     }
 }

@@ -49,7 +49,16 @@
 
 <script>
     var joinButton = document.getElementsByClassName("join");
+    var joinedUsers = document.getElementsByClassName("number-players");
     var alertButton = document.getElementsByClassName("alert");
+
+    Array.from(joinedUsers).forEach(function (player) {
+        var value = player.value;
+        if(value >= 6) {
+            alertButton.style.opacity = "1";
+        }
+    });
+
 
     Array.from(joinButton).forEach(function (button) {
         button.addEventListener('click', function () {
