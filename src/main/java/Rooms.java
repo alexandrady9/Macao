@@ -35,10 +35,11 @@ public class Rooms extends HttpServlet {
 
                 //we set id room for current user just because to not request another query to db
                 currentUser.setIdRoom(createdRoom.getId());
-                /// TODO: 12/8/2019 de facut un pachet standard pentru fiecare joc cand se incepe care se pune in arrayList
+                //creat a gameCards instance to initialized a new deck of cards
+                GameCards gameCards = new GameCards();
                 GameCardsRepository
                         .getInstance()
-                        .add(new GameCards(createdRoom.getId(), 0, new ArrayList<>()));
+                        .add(new GameCards(createdRoom.getId(), 0, gameCards.getCards()));
                 UserCardsRepository
                         .getInstance()
                         .add(new UserCards(createdRoom.getId(), currentUser, new ArrayList<>()));

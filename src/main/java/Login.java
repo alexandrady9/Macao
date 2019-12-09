@@ -44,9 +44,9 @@ public class Login extends HttpServlet {
                             .getUsersCardsForCurrentRoom(room.getId()).size()
                     )
             );
-            
-            /// TODO: 12/9/2019 arrayList = pachetul nostru de carti 
-            rooms.forEach(room -> GameCardsRepository.getInstance().add(new GameCards(room.getId(), 0, new ArrayList<>())));
+
+            GameCards gameCards = new GameCards();
+            rooms.forEach(room -> GameCardsRepository.getInstance().add(new GameCards(room.getId(), 0, gameCards.getCards())));
 
             rooms.get(2).setJoinedUsers(6);
 
