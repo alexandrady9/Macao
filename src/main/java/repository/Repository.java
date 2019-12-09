@@ -6,7 +6,7 @@ public interface Repository<T> {
 
     void add(T item);
 
-    void update(T item);
+    void update(T oldItem, T newItem);
 
     void remove(T item);
 

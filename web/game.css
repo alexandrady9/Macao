@@ -18,7 +18,7 @@ body {
 .info {
     margin-top: 30px;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
     display: flex;
 }
 
@@ -67,12 +67,9 @@ body {
 }
 
 .card-game-type {
-    position: absolute;
     content: "";
-    color: #EF3B3A;
+    color: #27ae60;
     font-size: 30px;
-    left: 80px;
-    bottom: 68px;
 }
 
 .deck {
@@ -81,18 +78,12 @@ body {
 
 .actions-wrapper {
     display: flex;
-    justify-content: flex-end;
     align-items: center;
     margin-bottom: 140px;
-    margin-right: 90px;
 }
 
-.start-game-form {
-    position: absolute;
-    content: "";
-    bottom: 20px; }
-
 .start-game-button {
+    margin-left: 100px;
     padding: 10px 40px;
     font-size: 18px;
     font-weight: 600;
@@ -107,6 +98,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
+    margin-left: 550px;
 }
 
 .actions button {

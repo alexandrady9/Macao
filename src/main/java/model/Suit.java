@@ -1,10 +1,10 @@
 package model;
 
 public enum Suit {
-    Diamonds,
-    Clubs,
-    Hearts,
-    Spades,
+    Diamond,
+    Club,
+    Heart,
+    Spade,
     Red,
     Black
 }

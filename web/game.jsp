@@ -25,8 +25,9 @@
 
 <main class="main-container">
     <div class="info">
-        <button class="finish-button" name="finish">Finish</button>
+        <button id="finish-game" class="finish-button" name="finish">Finish</button>
         <div> Randul tau. Jocul cu id-ul <%=roomId%> unde ni s-a alaturat user-ul <%=user.getUsername()%></div>
+        <div></div>
     </div>
     <div class="game-wrapper">
         <div class="users">
@@ -44,7 +45,8 @@
         </div>
         <div class="game">
             <button class ="card-game">
-                <span class="card-game-type"> <%=gameCards.getCurrentCard()%>  </span>
+                <span class="card-game-type"> <%=gameCards.getCurrentCard().getNumber().getNumberCode()%>
+                    <%=gameCards.getCurrentCard().getSuit()%>  </span>
             </button>
         </div>
         <div class="deck">
@@ -57,12 +59,11 @@
     </div>
 
     <div class="actions-wrapper">
-        <button class="start-game-button" name="startGame">Start</button>
-        <div></div>
+        <button id="start-game" class="start-game-button" name="start">Start</button>
         <div class="actions">
-            <button class="next">Urmatorul</button>
-            <button class="umflatura">Umflatura</button>
-            <button class="take-card">Ia carte</button>
+            <button id="next">Urmatorul</button>
+            <button id="umflatura">Umflatura</button>
+            <button id="take-card">Ia carte</button>
         </div>
     </div>
 </main>
@@ -70,73 +71,65 @@
     <div class="cards-container">
         <%for(int i = 0; i < userCards.getCards().size(); i++) {%>
             <button class ="card-user" value = "<%=userCards.getCards().get(i)%>">
-                <span class="card-user-type"> <%=userCards.getCards().get(i)%>  </span>
+
+                <span class="card-user-type"> <%=userCards.getCards().get(i).getNumber().getNumberCode()%> +
+                                                <%=userCards.getCards().get(i).getSuit()%>"</span>
             </button>
         <% } %>
     </div>
 </footer>
 
 <script>
-    var next = document.getElementsByClassName("next");
-    var umflatura = document.getElementsByClassName("umflatura");
-    var takeCard = document.getElementsByClassName("takeCard");
+    var next = document.getElementById("next");
+    var umflatura = document.getElementById("umflatura");
+    var takeCard = document.getElementById("take-card");
 
-    var startGame = document.getElementsByClassName("start=game-button");
-    var finishGame = document.getElementsByClassName("finish-button");
+    var startGame = document.getElementById("start-game");
+    var finishGame = document.getElementById("finish-game");
 
-    Array.from(next).forEach(function (nextBtn) {
-        nextBtn.addEventListener('click', function () {
+    next.addEventListener('click', function () {
             fetch('game?action=next', {
                 method: "POST"
             })
                 .then(function (data) {
                     window.location.href = data.url;
                 })
-        })
     });
 
-    Array.from(umflatura).forEach(function (button) {
-        button.addEventListener('click', function () {
+    umflatura.addEventListener('click', function () {
             fetch('game?action=umflatura', {
-                method: "GET"
+                method: "POST"
             })
                 .then(function (data) {
                     window.location.href = data.url;
                 })
-        })
     });
 
-    Array.from(takeCard).forEach(function (takeBtn) {
-        takeBtn.addEventListener('click', function () {
+    takeCard.addEventListener('click', function () {
             fetch('game?action=take', {
-                method: "GET"
+                method: "POST"
             })
                 .then(function (data) {
                     window.location.href = data.url;
                 })
-        })
     });
 
-    Array.from(finishGame).forEach(function (finishBtn) {
-        finishBtn.addEventListener('click', function () {
+    finishGame.addEventListener('click', function () {
             fetch('game?action=finish', {
                 method: "POST"
             })
                 .then(function (data) {
                     window.location.href = data.url;
                 })
-        })
     });
 
-    Array.from(startGame).forEach(function (startBtn) {
-        startBtn.addEventListener('click', function () {
+    startGame.addEventListener('click', function () {
             fetch('game?action=start', {
-                method: "GET"
+                method: "POST"
             })
                 .then(function (data) {
                     window.location.href = data.url;
                 })
-        })
     });
 
 </script>

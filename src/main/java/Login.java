@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 @WebServlet(name = "login",
@@ -33,16 +34,13 @@ public class Login extends HttpServlet {
                     .add(new UserCards(user1.getIdRoom(), user1, new ArrayList<>())));
 
             List<Room> rooms = utils.getRooms();
-//            rooms.forEach(room -> room
-//                    .setJoinedUsers(UserCardsRepository
-//                            .getInstance()
-//                            .getUsersCardsForCurrentRoom(room.getId()).size()
-//                    )
-//            );
 
-            rooms.forEach(room -> GameCardsRepository.getInstance().add(new GameCards(room.getId(), 0, GenerateDeck.generate())));
+            List<Card> cards = GenerateDeck.generate();
+            Random rand = new Random();
+            Card currentCard = cards.get(rand.nextInt(cards.size()));
+            cards.remove(currentCard);
 
-            //rooms.get(2).setJoinedUsers(6);
+            rooms.forEach(room -> GameCardsRepository.getInstance().add(new GameCards(room.getId(), currentCard, cards)));
 
             currentUser = utils.checkLogin(currentUser.getUsername(), currentUser.getPassword());
 

@@ -99,7 +99,7 @@ public class Utils {
             Statement statement = Objects.requireNonNull(ConnectionDB.getInstance().createConnection()).createStatement();
             String query = "INSERT INTO room (`idHost`, `joinedUsers`) VALUES('" + idHost + "', '" + 1 + "')";
             statement.executeUpdate(query);
-
+            /// TODO: 12/9/2019 sa se adauge si in tabela de user, id-ul camerei
             statement.close();
 
         } catch (SQLException e) {
@@ -120,6 +120,29 @@ public class Utils {
 
             String query2 = "UPDATE user set idRoom ='" +  roomId + "'where id ='" + userId + "'";
             statement.executeUpdate(query2);
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deletedRoom(long roomId, List<User> joinedUsers) {
+        try {
+            Statement statement = Objects.requireNonNull(ConnectionDB.getInstance().createConnection()).createStatement();
+
+            joinedUsers.forEach(joinedUser -> {
+                String query2 = "UPDATE user set idRoom = null where id ='" + joinedUser.getId() + "'";
+                try {
+                    statement.executeUpdate(query2);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+            });
+
+            String query = "DELETE from room where id = '" + roomId + "'";
+            statement.executeUpdate(query);
+
             statement.close();
         } catch (SQLException e) {
             e.printStackTrace();

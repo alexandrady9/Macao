@@ -29,7 +29,7 @@
     <div class="card-container">
         <%for (int i = 0; i < rooms.size(); i++) {%>
         <%Room room = rooms.get(i);%>
-        <button type="submit" value="<%=room.getId()%>" class="join game-card">
+        <button type="submit" value="<%=room.getId()%>" players="<%=room.getJoinedUsers()%>" class="join game-card">
             <span class="number-players"> <%=room.getJoinedUsers()%> / 6 </span>
             <span class="join-button">Join</span>
         </button>
@@ -38,8 +38,8 @@
     </div>
 </main>
 <footer class="footer">
-    <div class="alert">
-        <span class="close-error">&times;</span>
+    <div id="alert" class="alert">
+        <span id="close-alert" class="close-error">&times;</span>
         Camera este plina, te rog selecteaza alta camera.
     </div>
     <form class="new-game-form" action="rooms" method="post">
@@ -48,41 +48,42 @@
 </footer>
 
 <script>
-    var joinButton = document.getElementsByClassName("join");
-    var joinedUsers = document.getElementsByClassName("number-players");
-    var alertButton = document.getElementsByClassName("alert");
-
-    Array.from(joinedUsers).forEach(function (player) {
-        var value = player.value;
-        if(value >= 6) {
-            alertButton.style.opacity = "1";
-        }
-    });
+    var joinButtons = document.getElementsByClassName("join");
+    var closeAlert = document.getElementById("close-alert");
+    var alert = document.getElementById("alert");
 
 
-    Array.from(joinButton).forEach(function (button) {
+    Array.from(joinButtons).forEach(function (button) {
         button.addEventListener('click', function () {
-            var value = button.value;
-            fetch('rooms?' + 'roomId=' + value, {
-                method: "POST"
-            })
-                .then(function (data) {
-                    window.location.href = data.url;
+            var players = button.getAttribute("players");
+            if (players >= 6) {
+                alert.style.opacity = "1";
+            } else {
+                var value = button.value;
+                fetch('rooms?' + 'roomId=' + value, {
+                    method: "POST"
                 })
+                    .then(function (data) {
+                        window.location.href = data.url;
+                    })
+            }
         })
     });
 
-    var closeButton = document.getElementsByClassName("close-error");
+    closeAlert.addEventListener('click', function () {
+        alert.style.opacity = "0";
+    })
 
-    Array.from(closeButton).forEach(function (close) {
-        close.addEventListener('click', function () {
-            var div = this.parentElement;
-            div.style.opacity = "0";
-            setTimeout(function () {
-                div.style.display = "none";
-            }, 600);
+    function getMessages() {
+        fetch('room', {
+            method: "GET"
         })
-    });
+            .then(function (value) {
+
+            })
+    }
+
+    setInterval(getMessages, 1000);
 
 </script>
 

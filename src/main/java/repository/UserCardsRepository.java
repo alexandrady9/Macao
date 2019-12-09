@@ -29,8 +29,8 @@ public class UserCardsRepository implements Repository<UserCards> {
     }
 
     @Override
-    public void update(UserCards item) {
-        /// TODO: 12/8/2019 update la cartile userului
+    public void update(UserCards oldItem, UserCards newItem) {
+        userCards.set(userCards.indexOf(oldItem), newItem);
     }
 
     @Override

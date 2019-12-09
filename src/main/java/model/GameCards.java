@@ -6,7 +6,7 @@ public class GameCards {
 
     private long idRoom;
 
-    private int currentCard;
+    private Card currentCard;
 
     private List<Card> cards;
 
@@ -14,7 +14,7 @@ public class GameCards {
         /// TODO: 12/8/2019 currentCard va trebui sa fie inlocuita cu o stiva sau coada cu cartile care se pun jos
     }
 
-    public GameCards(long idRoom, int currentCard, List<Card> cards) {
+    public GameCards(long idRoom, Card currentCard, List<Card> cards) {
         this.idRoom = idRoom;
         this.currentCard = currentCard;
         this.cards = cards;
@@ -28,11 +28,11 @@ public class GameCards {
         this.idRoom = idRoom;
     }
 
-    public int getCurrentCard() {
+    public Card getCurrentCard() {
         return currentCard;
     }
 
-    public void setCurrentCard(int currentCard) {
+    public void setCurrentCard(Card currentCard) {
         this.currentCard = currentCard;
     }
 
