@@ -29,6 +29,8 @@ public class Login extends HttpServlet {
             currentUser.setPassword(request.getParameter("password"));
 
             List<User> users = utils.getUsers();
+            if(!UserCardsRepository.getInstance().getAll().isEmpty())
+                UserCardsRepository.getInstance().removeAll();
             users.forEach(user1 -> UserCardsRepository
                     .getInstance()
                     .add(new UserCards(user1.getIdRoom(), user1, new ArrayList<>())));
@@ -40,7 +42,7 @@ public class Login extends HttpServlet {
             Card currentCard = cards.get(rand.nextInt(cards.size()));
             cards.remove(currentCard);
 
-            rooms.forEach(room -> GameCardsRepository.getInstance().add(new GameCards(room.getId(), currentCard, cards)));
+            rooms.forEach(room -> GameCardsRepository.getInstance().add(new GameCards(room.getId(), currentCard, cards, 0, 0)));
 
             currentUser = utils.checkLogin(currentUser.getUsername(), currentUser.getPassword());
 

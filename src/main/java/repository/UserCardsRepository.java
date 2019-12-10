@@ -57,4 +57,8 @@ public class UserCardsRepository implements Repository<UserCards> {
                     .findFirst()
                     .orElse(null);
     }
+
+    public void removeAll() {
+        userCards.clear();
+    }
 }

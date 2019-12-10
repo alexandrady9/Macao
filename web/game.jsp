@@ -62,7 +62,7 @@
         <button id="start-game" class="start-game-button" name="start">Start</button>
         <div class="actions">
             <button id="next">Urmatorul</button>
-            <button id="umflatura">Umflatura</button>
+            <button id="draw">Umflatura</button>
             <button id="take-card">Ia carte</button>
         </div>
     </div>
@@ -81,7 +81,7 @@
 
 <script>
     var next = document.getElementById("next");
-    var umflatura = document.getElementById("umflatura");
+    var draw = document.getElementById("draw");
     var takeCard = document.getElementById("take-card");
 
     var startGame = document.getElementById("start-game");
@@ -92,16 +92,16 @@
                 method: "POST"
             })
                 .then(function (data) {
-                    window.location.href = data.url;
+                    //window.location.href = data.url;
                 })
     });
 
-    umflatura.addEventListener('click', function () {
-            fetch('game?action=umflatura', {
+    draw.addEventListener('click', function () {
+            fetch('game?action=draw', {
                 method: "POST"
             })
                 .then(function (data) {
-                    window.location.href = data.url;
+                    //window.location.href = data.url;
                 })
     });
 
@@ -110,7 +110,7 @@
                 method: "POST"
             })
                 .then(function (data) {
-                    window.location.href = data.url;
+                    //window.location.href = data.url;
                 })
     });
 
@@ -128,7 +128,7 @@
                 method: "POST"
             })
                 .then(function (data) {
-                    window.location.href = data.url;
+                    //window.location.href = data.url;
                 })
     });
 

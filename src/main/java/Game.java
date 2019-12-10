@@ -1,4 +1,5 @@
 import connection.Utils;
+import model.Card;
 import model.GameCards;
 import model.User;
 import model.UserCards;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @WebServlet("/game")
@@ -26,15 +28,62 @@ public class Game extends HttpServlet {
             User currentSessionUser = (User) request.getSession().getAttribute("currentSessionUser");
             UserCards userCards = (UserCards) request.getSession().getAttribute("userCards");
             GameCards gameCards = (GameCards) request.getSession().getAttribute("gameCards");
-            List<UserCards> usersCards = (List<UserCards>) request.getSession().getAttribute("usersCards");
+            //List<UserCards> usersCards = (List<UserCards>) request.getSession().getAttribute("usersCards");
 
-            switch (request.getParameter("action")){
-                case "next" : {
-                    response.sendRedirect("index.jsp");
-                    break;
+            List<UserCards> usersCards = UserCardsRepository.getInstance().getUsersCardsForCurrentRoom(roomId);
+
+            System.out.println("session: " + currentSessionUser.getUsername());
+            int currentPosition = gameCards.getCurrentPositionForUser();
+            User currentUser = usersCards.get(currentPosition).getUser();
+            System.out.println("current user:" + currentUser.getUsername());
+
+            if(currentSessionUser.getUsername().equals(currentUser.getUsername())) {
+                switch (request.getParameter("action")) {
+                    case "next": {
+                        if (currentPosition == usersCards.size() - 1) {
+                            gameCards.setCurrentPositionForUser(0);
+                        } else {
+                            gameCards.setCurrentPositionForUser(currentPosition + 1);
+                        }
+                        break;
+                    }
+
+                    case "draw": {
+                        List<Card> cardsToDraw = gameCards.getCards()
+                                .stream()
+                                .limit(gameCards.getCardsToDraw())
+                                .collect(Collectors.toList());
+                        List<Card> remainingCards = gameCards.getCards();
+                        remainingCards.subList(0, gameCards.getCardsToDraw()).clear();
+                        gameCards.setCards(remainingCards);
+                        List<Card> newUserCards = usersCards.get(currentPosition).getCards();
+                        newUserCards.addAll(cardsToDraw);
+                        usersCards.get(currentPosition).setCards(newUserCards);
+                        gameCards.setCardsToDraw(0);
+                        System.out.println(currentUser.getUsername() + " has " + usersCards.get(currentPosition).getCards().size());
+                        System.out.print("Cards in game: " + gameCards.getCards().size());
+                        break;
+                    }
+
+                    case "take": {
+                        Card card = gameCards.getCards().get(0);
+                        gameCards.getCards().remove(0);
+                        List<Card> cards = usersCards.get(currentPosition).getCards();
+                        cards.add(card);
+                        usersCards.get(currentPosition).setCards(cards);
+                        System.out.println(usersCards.get(currentPosition).getUser().getUsername() + " take " +
+                                card.getNumber().name() + " " + card.getSuit().name());
+//                    System.out.println(usersCards.get(currentPosition).getUser().getUsername() + " has " +
+//                            usersCards.get(currentPosition).getCards().size());
+                        break;
+                    }
                 }
+            } else {
+                System.out.println("Nu este randul tau!");
+            }
 
-                case "finish" : {
+            switch (request.getParameter("action")) {
+                case "finish": {
                     List<User> joinedUsers = new ArrayList<>();
                     usersCards.forEach(userCards1 -> joinedUsers.add(userCards1.getUser()));
                     utils.deletedRoom(roomId, joinedUsers);
@@ -49,37 +98,35 @@ public class Game extends HttpServlet {
                     break;
                 }
 
-                case "umflatura" : {
-                    /// TODO: 12/9/2019 se vede cate carti au fost in pachetul de jos si se iau dupa din GameCards
-                    response.sendRedirect("invalidLogin.jsp");
-                    break;
-                }
+                case "start": {
+                    for (int i = 0; i < usersCards.size(); i++) {
+                        List<Card> givenCards = gameCards.getCards()
+                                .stream()
+                                .limit(5)
+                                .collect(Collectors.toList());
+//                        System.out.println(usersCards.get(i).getUser().getUsername() + ": ");
+//                        System.out.println("Cards: " + givenCards.size());
+                        List<Card> remainingCards = gameCards.getCards();
+                        remainingCards.subList(0, 5).clear();
+                        gameCards.setCards(remainingCards);
+//                        System.out.println("Game cards: " + gameCards.getCards().size());
+                        usersCards.get(i).setCards(givenCards);
+//                        System.out.println("User cards: " + usersCards.get(i).getCards().size());
+                    }
 
-                case "take" : {
-                    /// TODO: 12/9/2019 se ia din gameCards carte
-                    break;
-                }
+                    request.getSession().removeAttribute("gameCards");
 
-                case "start" : {
-                    //for (int i = 0; i < gameCards.getCards().size(); i++) {
-                        /// TODO: 12/10/2019 update the userCardsrepo, gameCardsRepo
-                        request.getSession().removeAttribute("gameCards");
+                    userCards = UserCardsRepository.getInstance().getCardsForCurrentUser(currentSessionUser, roomId);
+                    gameCards = GameCardsRepository.getInstance().getByRoomId(roomId);
+                    usersCards = UserCardsRepository.getInstance().getUsersCardsForCurrentRoom(roomId);
 
-                        userCards = UserCardsRepository.getInstance().getCardsForCurrentUser(currentSessionUser, roomId);
-                        gameCards = GameCardsRepository.getInstance().getByRoomId(roomId);
-                        usersCards = UserCardsRepository.getInstance().getUsersCardsForCurrentRoom(roomId);
-
-                        request.getSession().setAttribute("userCards", userCards);
-                        request.getSession().setAttribute("gameCards", gameCards);
-                        request.getSession().setAttribute("usersCards", usersCards);
-                    //}
+                    request.getSession().setAttribute("userCards", userCards);
+                    request.getSession().setAttribute("gameCards", gameCards);
+                    request.getSession().setAttribute("usersCards", usersCards);
                     break;
                 }
             }
-        }
-
-
-        catch (Throwable theException) {
+        } catch (Throwable theException) {
             System.out.println(theException.getMessage());
         }
     }

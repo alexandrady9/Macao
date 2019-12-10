@@ -58,7 +58,7 @@ public class Rooms extends HttpServlet {
 
                 GameCardsRepository
                         .getInstance()
-                        .add(new GameCards(createdRoom.getId(), currentCard, cards));
+                        .add(new GameCards(createdRoom.getId(), currentCard, cards, 0, 0));
                 UserCardsRepository
                         .getInstance()
                         .add(new UserCards(createdRoom.getId(), currentUser, new ArrayList<>()));

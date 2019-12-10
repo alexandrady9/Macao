@@ -99,9 +99,11 @@ public class Utils {
             Statement statement = Objects.requireNonNull(ConnectionDB.getInstance().createConnection()).createStatement();
             String query = "INSERT INTO room (`idHost`, `joinedUsers`) VALUES('" + idHost + "', '" + 1 + "')";
             statement.executeUpdate(query);
-            /// TODO: 12/9/2019 sa se adauge si in tabela de user, id-ul camerei
-            statement.close();
 
+            Room room = getLastRoomCreated();
+            String query2 = "UPDATE user set idRoom ='" +  room.getId() + "'where id ='" + idHost + "'";
+            statement.executeUpdate(query2);
+            statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
