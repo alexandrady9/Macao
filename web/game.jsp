@@ -124,37 +124,44 @@
                 var currentCardNumber = putCard.getAttribute("currentCardNumber");
 
                 if (cardNumber === "Joker") {
-                    if (cardSuit !== currentCardSuit) {
+                    if((currentCardSuit === "Diamond" || currentCardSuit === "Heart") && cardSuit === "Black") {
                         alert.style.opacity = "1";
-                        alertMessage.innerHTML = "Joker-ul se poate da peste aceeasi culoare. Incearca o alta carte sau ia o carte";
-                    }
-                }
-
-                else {
-                    if (cardNumber === "2") {
-                        counterForDraw += 2;
-                    }
-                    else if (cardNumber === "3") {
-                        counterForDraw += 3;
-                    }
-                    else if (cardNumber === "4") {
-                        counterForDraw = 0;
-                    }
-                    else if (cardNumber === "Joker") {
+                        alertMessage.innerHTML = "Joker-ul se poate da doar peste aceeasi culoare. Incearca o alta carte sau ia o carte.";
+                    } else if((currentCardSuit === "Club" || currentCardSuit === "Spade") && cardSuit === "Red") {
+                        alert.style.opacity = "1";
+                        alertMessage.innerHTML = "Joker-ul se poate da doar peste aceeasi culoare. Incearca o alta carte sau ia o carte.";
+                    } else {
                         if (cardSuit === "Red") {
                             counterForDraw += 10;
                         }
                         else if (cardSuit === "Black") {
                             counterForDraw += 5;
                         }
+                        fetch('game?cardId=' + cardId, {
+                            method: "POST"
+                        })
+                            .then(function (data) {
+                            });
+                        isClicked = true;
                     }
-
-                    // else if((cardNumber !== currentCardNumber) && (cardSuit !== currentCardSuit)) {
-                    //     alert.style.opacity = "1";
-                    //     alertMessage.innerHTML = "Numarul sau simbolul nu corespund. Incearca o alta carte sau ia o carte";
-                    // }
-
-
+                } else if(cardNumber === "2" || cardNumber === "3" || cardNumber === "4" ){
+                    if (cardNumber === "2") {
+                        counterForDraw += 2;
+                    } else if (cardNumber === "3") {
+                        counterForDraw += 3;
+                    } else if (cardNumber === "4") {
+                        counterForDraw = 0;
+                    }
+                    fetch('game?cardId=' + cardId, {
+                        method: "POST"
+                    })
+                        .then(function (data) {
+                        });
+                    isClicked = true;
+                } else if((cardNumber !== currentCardNumber) && (cardSuit !== currentCardSuit)) {
+                    alert.style.opacity = "1";
+                    alertMessage.innerHTML = "Numarul sau simbolul nu corespund. Incearca o alta carte sau ia o carte.";
+                } else {
                     fetch('game?cardId=' + cardId, {
                         method: "POST"
                     })
