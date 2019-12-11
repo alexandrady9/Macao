@@ -43,6 +43,11 @@ public class UserCardsRepository implements Repository<UserCards> {
         return userCards;
     }
 
+    /**
+     * get all usersCards registered in the specified room
+     * @param idRoom
+     * @return usersCards
+     */
     public List<UserCards> getUsersCardsForCurrentRoom(long idRoom) {
         return userCards
                 .stream()
@@ -50,6 +55,12 @@ public class UserCardsRepository implements Repository<UserCards> {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * get userCard for the current user
+     * @param user
+     * @param idRoom
+     * @return userCards
+     */
     public UserCards getCardsForCurrentUser(User user, long idRoom) {
         return userCards
                     .stream()

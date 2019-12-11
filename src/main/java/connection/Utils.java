@@ -13,13 +13,17 @@ import java.util.Objects;
 
 public class Utils {
     private List<User> users = new ArrayList<>();
-    public List<Room> rooms = new ArrayList<>();
+    private List<Room> rooms = new ArrayList<>();
 
     public Utils() {
         getUsers();
         getRooms();
     }
 
+    /**
+     * get all users from the database
+     * @return List of users
+     */
     public List<User> getUsers() {
         try {
             users.clear();
@@ -42,10 +46,13 @@ public class Utils {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 
+    /**
+     * get all rooms from the database
+     * @return list of rooms
+     */
     public List<Room> getRooms() {
         try {
             rooms.clear();
@@ -72,7 +79,6 @@ public class Utils {
 
     /**
      * validation for login
-     *
      * @param username
      * @param password
      * @return user
@@ -86,6 +92,11 @@ public class Utils {
         return null;
     }
 
+    /**
+     * get room with id = roomId
+     * @param roomId
+     * @return room
+     */
     public Room getRoom(long roomId) {
         return rooms
                 .stream()
@@ -94,6 +105,10 @@ public class Utils {
                 .orElse(null);
     }
 
+    /**
+     * create a new room in the database for a specified user
+     * @param idHost
+     */
     public void createRoom(long idHost) {
         try {
             Statement statement = Objects.requireNonNull(ConnectionDB.getInstance().createConnection()).createStatement();
@@ -109,11 +124,20 @@ public class Utils {
         }
     }
 
+    /**
+     * get the last room that was created
+     * @return room
+     */
     public Room getLastRoomCreated() {
         getRooms();
         return rooms.get(rooms.size() - 1);
     }
 
+    /**
+     * modify user and room tables when a given user join a room
+     * @param userId
+     * @param roomId
+     */
     public void joinRoom(long userId, long roomId) {
         try {
             Statement statement = Objects.requireNonNull(ConnectionDB.getInstance().createConnection()).createStatement();
@@ -128,6 +152,11 @@ public class Utils {
         }
     }
 
+    /**
+     * delete the specified room and the connections between it and the participating users
+     * @param roomId
+     * @param joinedUsers
+     */
     public void deletedRoom(long roomId, List<User> joinedUsers) {
         try {
             Statement statement = Objects.requireNonNull(ConnectionDB.getInstance().createConnection()).createStatement();

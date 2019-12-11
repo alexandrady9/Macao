@@ -13,10 +13,13 @@ class ConnectionDB {
         if (connectionDB == null) {
             connectionDB = new ConnectionDB();
         }
-
         return connectionDB;
     }
 
+    /**
+     * create connection to the databse
+     * @return myConnection
+     */
     Connection createConnection() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -28,7 +31,6 @@ class ConnectionDB {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return null;
     }
 }

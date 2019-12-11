@@ -22,6 +22,11 @@ public class Login extends HttpServlet {
 
     private Utils utils = new Utils();
 
+    /***
+     * A POST request results from an HTML form that specifically lists POST as the METHOD and it should be handled by doPost() method.
+     * @param request
+     * @param response
+     */
     public void doPost(HttpServletRequest request, HttpServletResponse response) {
 
         try {
@@ -49,11 +54,13 @@ public class Login extends HttpServlet {
             currentUser = utils.checkLogin(currentUser.getUsername(), currentUser.getPassword());
 
             if (currentUser != null) {
+                ConfigureLog.configureLogFile().info("User " + currentUser.getUsername() + " has been successfully logged in.");
                 setAttributeForWindow(request, currentUser, rooms);
                 response.sendRedirect("rooms_view.jsp");
             }
 
             else {
+                ConfigureLog.configureLogFile().info("User " + currentUser.getUsername() + " invalid.");
                 response.sendRedirect("invalidLogin.jsp");
             }
         }
@@ -63,6 +70,12 @@ public class Login extends HttpServlet {
         }
     }
 
+    /**
+     * sets the attributes for a session
+     * @param request
+     * @param currentUser
+     * @param rooms
+     */
     private void setAttributeForWindow(HttpServletRequest request, User currentUser, List<Room> rooms) {
         HttpSession session = request.getSession(true);
         session.setAttribute("currentSessionUser", currentUser);

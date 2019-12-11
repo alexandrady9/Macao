@@ -1,10 +1,7 @@
 package servlet;
 
 import connection.Utils;
-import model.Card;
-import model.GameCards;
-import model.User;
-import model.UserCards;
+import model.*;
 import repository.GameCardsRepository;
 import repository.UserCardsRepository;
 
@@ -21,6 +18,11 @@ import java.util.stream.Collectors;
 @WebServlet("/game")
 public class Game extends HttpServlet {
 
+    /***
+     * A POST request results from an HTML form that specifically lists POST as the METHOD and it should be handled by doPost() method.
+     * @param request
+     * @param response
+     */
     public void doPost(HttpServletRequest request, HttpServletResponse response) {
 
         try {
@@ -35,10 +37,9 @@ public class Game extends HttpServlet {
 
             List<UserCards> usersCards = UserCardsRepository.getInstance().getUsersCardsForCurrentRoom(roomId);
 
-            System.out.println("session: " + currentSessionUser.getUsername());
             int currentPosition = gameCards.getCurrentPositionForUser();
             User currentUser = usersCards.get(currentPosition).getUser();
-            System.out.println("current user:" + currentUser.getUsername());
+            ConfigureLog.configureLogFile().info("Current user: " + currentUser.getUsername());
 
             if(currentSessionUser.getUsername().equals(currentUser.getUsername())) {
                 if(request.getParameter("cardId") != null) {
@@ -52,7 +53,8 @@ public class Game extends HttpServlet {
                     usersCards.get(currentPosition).setCards(cards);
                     userCards.setCards(cards);
 
-                    System.out.println(gameCards.getCurrentCard().getNumber());
+                    ConfigureLog.configureLogFile().info("User " + currentUser.getUsername() + " put down " +
+                            cardToPut.getNumber().getNumberCode() + " " + cardToPut.getSuit().name());
 
                     request.getSession().setAttribute("userCards", userCards);
                     request.getSession().setAttribute("gameCards", gameCards);
@@ -66,6 +68,7 @@ public class Game extends HttpServlet {
                         } else {
                             gameCards.setCurrentPositionForUser(currentPosition + 1);
                         }
+                        ConfigureLog.configureLogFile().info("User " + currentUser.getUsername() + " press next button.");
                         break;
                     }
 
@@ -89,6 +92,8 @@ public class Game extends HttpServlet {
                         System.out.println(currentUser.getUsername() + " has " + usersCards.get(currentPosition).getCards().size());
                         System.out.print("Cards in game: " + gameCards.getCards().size());
 
+                        ConfigureLog.configureLogFile().info("User " + currentUser.getUsername() + " drawn " + cardsToDraw + " cards.");
+
                         request.getSession().setAttribute("userCards", userCards);
                         request.getSession().setAttribute("gameCards", gameCards);
                         request.getSession().setAttribute("usersCards", usersCards);
@@ -106,10 +111,9 @@ public class Game extends HttpServlet {
 
                         System.out.println(usersCards.get(currentPosition).getUser().getUsername() + " take " +
                                 card.getNumber().name() + " " + card.getSuit().name());
-//                    System.out.println(usersCards.get(currentPosition).getUser().getUsername() + " has " +
-//                            usersCards.get(currentPosition).getCards().size());
 
-                        /// TODO: 12/11/2019 update si in userCards la toate metodele
+                        ConfigureLog.configureLogFile().info("User " + currentUser.getUsername() + " took " +
+                                card.getNumber().name() + " " + card.getSuit().name());
 
                         request.getSession().setAttribute("userCards", userCards);
                         request.getSession().setAttribute("gameCards", gameCards);
@@ -129,6 +133,8 @@ public class Game extends HttpServlet {
 
                     GameCardsRepository.getInstance().remove(gameCards);
                     usersCards.forEach(userCards1 -> UserCardsRepository.getInstance().remove(userCards1));
+
+                    ConfigureLog.configureLogFile().info("User " + currentUser.getUsername() + " has finished the game.");
 
                     HttpSession session = request.getSession(true);
                     session.setAttribute("currentSessionUser", currentSessionUser);
@@ -154,6 +160,8 @@ public class Game extends HttpServlet {
 //                        System.out.println("servlet.Game cards: " + gameCards.getCards().size());
 //                        System.out.println("User cards: " + usersCards.get(i).getCards().size());
                     }
+
+                    ConfigureLog.configureLogFile().info("User " + currentUser.getUsername() + " has started the game.");
 
                     request.getSession().setAttribute("userCards", userCards);
                     request.getSession().setAttribute("gameCards", gameCards);

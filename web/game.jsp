@@ -26,8 +26,8 @@
 <main class="main-container">
     <div class="info">
         <button id="finish-game" class="finish-button" name="finish">Finish</button>
-        <div> Randul lui <%=usersCards.get(gameCards.getCurrentPositionForUser()).getUser().getUsername()%>
-            Jocul cu id-ul <%=roomId%> unde ni s-a alaturat user-ul <%=user.getUsername()%>
+        <div> It's your turn,  <%=usersCards.get(gameCards.getCurrentPositionForUser()).getUser().getUsername()%>.
+            Game with id <%=roomId%>, where the user <%=user.getUsername()%> joined us.
         </div>
         <div></div>
     </div>
@@ -35,14 +35,14 @@
         <div class="users">
             <table>
                 <tr>
-                    <td><i class="fa fa-users"></i> Jucatori:</td>
+                    <td><i class="fa fa-users"></i> Players:</td>
                 </tr>
                 <tr>
                     <td></td>
                 </tr>
                 <%for (int i = 0; i < usersCards.size(); i++) { %>
                 <tr>
-                    <td>Jucatorul <%=i + 1%> : <%=usersCards.get(i).getUser().getUsername()%>
+                    <td>Player <%=i + 1%> : <%=usersCards.get(i).getUser().getUsername()%>
                     </td>
                 </tr>
                 <%}%>
@@ -66,9 +66,9 @@
     <div class="actions-wrapper">
         <button id="start-game" class="start-game-button" name="start">Start</button>
         <div class="actions">
-            <button id="next">Urmatorul</button>
-            <button id="draw">Umfla</button>
-            <button id="take-card">Ia carte</button>
+            <button id="next">Next</button>
+            <button id="draw">Draw</button>
+            <button id="take-card">Take card</button>
         </div>
     </div>
 

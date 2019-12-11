@@ -57,7 +57,6 @@ public class GameCards {
         this.currentPositionForUser = currentPositionForUser;
     }
 
-
     public int getCardsToDraw() {
         return cardsToDraw;
     }

@@ -8,18 +8,13 @@ import repository.UserCardsRepository;
 import connection.Utils;
 import model.User;
 
-import javax.servlet.AsyncContext;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -38,9 +33,15 @@ public class Rooms extends HttpServlet {
         response.getWriter().close();
     }
 
+    /***
+     * A POST request results from an HTML form that specifically lists POST as the METHOD and it should be handled by doPost() method.
+     * @param request
+     * @param response
+     */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) {
         try {
+
             User currentUser = (User) request.getSession().getAttribute("currentSessionUser");
 
             if (request.getParameter("roomId") == null) {
@@ -63,9 +64,10 @@ public class Rooms extends HttpServlet {
                         .getInstance()
                         .add(new UserCards(createdRoom.getId(), currentUser, new ArrayList<>()));
 
+                ConfigureLog.configureLogFile().info("A new room(id - " + createdRoom.getId() + ") was created by " + currentUser.getUsername());
+
                 setAttributeForWindow(request, currentUser, createdRoom.getId());
                 response.sendRedirect("game.jsp");
-
             } else {
                 long roomId = Long.parseLong(request.getParameter("roomId"));
 
@@ -77,8 +79,11 @@ public class Rooms extends HttpServlet {
                         .getInstance()
                         .add(new UserCards(roomId, currentUser, new ArrayList<>()));
 
+                ConfigureLog.configureLogFile().info("User " + currentUser.getUsername() + " joined the room with id " + roomId);
+
                 setAttributeForWindow(request, currentUser, roomId);
                 response.sendRedirect("game.jsp");
+
             }
 
         } catch (Throwable theException) {
@@ -86,6 +91,12 @@ public class Rooms extends HttpServlet {
         }
     }
 
+    /**
+     * sets the attributes for a session
+     * @param request
+     * @param currentUser
+     * @param roomId
+     */
     private void setAttributeForWindow(HttpServletRequest request, User currentUser, long roomId) {
         HttpSession session = request.getSession(true);
         session.setAttribute("currentSessionUser", currentUser);

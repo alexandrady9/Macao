@@ -6,6 +6,10 @@ import java.util.List;
 
 public class GenerateDeck {
 
+    /**
+     * generates the deck of 54 cards for Macao game
+     * @return cards
+     */
     public static List<Card> generate() {
         List<Card> cards = new ArrayList<Card>() {{
             for (Number number : Number.values()) {
