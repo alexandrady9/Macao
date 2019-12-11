@@ -52,7 +52,6 @@
     var closeAlert = document.getElementById("close-alert");
     var alert = document.getElementById("alert");
 
-
     Array.from(joinButtons).forEach(function (button) {
         button.addEventListener('click', function () {
             var players = button.getAttribute("players");
@@ -72,18 +71,28 @@
 
     closeAlert.addEventListener('click', function () {
         alert.style.opacity = "0";
-    })
+    });
 
-    function getMessages() {
-        fetch('room', {
+    function getRooms() {
+        fetch('rooms', {
             method: "GET"
         })
-            .then(function (value) {
+            .then(function (data) {
+                var room = data;
+
+                var contentElement = document.getElementById("card-container");
+                for (var i = 0; i < room.length; i ++) {
+                    var a = "<button type=\"submit\" value=\" "  + room[i].id + "\" players=\" " + room[i].joinedUsers + "\" class=\"join game-card\">" +
+                        "<span class=\"number-players\">" + room[i].joinedUsers / 6 + "</span>" +
+                        "<span class=\"join-button\"> Join </span>" + "</button>";
+
+                    contentElement.innerHTML = a + contentElement.innerHTML;
+                }
 
             })
     }
 
-    setInterval(getMessages, 1000);
+    setInterval(getRooms, 1000);
 
 </script>
 

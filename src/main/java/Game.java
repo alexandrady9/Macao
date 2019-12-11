@@ -22,13 +22,14 @@ public class Game extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) {
 
         try {
+            /// TODO: 12/11/2019 update cards for first user
+            /// TODO: 12/11/2019 cand se da finish sa se dea finish la toti userii
             Utils utils = new Utils();
 
             Long roomId = (Long) request.getSession().getAttribute("roomId");
             User currentSessionUser = (User) request.getSession().getAttribute("currentSessionUser");
             UserCards userCards = (UserCards) request.getSession().getAttribute("userCards");
             GameCards gameCards = (GameCards) request.getSession().getAttribute("gameCards");
-            //List<UserCards> usersCards = (List<UserCards>) request.getSession().getAttribute("usersCards");
 
             List<UserCards> usersCards = UserCardsRepository.getInstance().getUsersCardsForCurrentRoom(roomId);
 
@@ -37,7 +38,27 @@ public class Game extends HttpServlet {
             User currentUser = usersCards.get(currentPosition).getUser();
             System.out.println("current user:" + currentUser.getUsername());
 
+            request.getSession().setAttribute("currentUser", currentUser.getUsername());
+
             if(currentSessionUser.getUsername().equals(currentUser.getUsername())) {
+                if(request.getParameter("cardId") != null) {
+                    int cardId = Integer.parseInt(request.getParameter("cardId"));
+                    Card cardToPut = userCards.getCards().get(cardId);
+
+                    gameCards.setCurrentCard(cardToPut);
+
+                    List<Card> cards = usersCards.get(currentPosition).getCards();
+                    cards.remove(cardToPut);
+                    usersCards.get(currentPosition).setCards(cards);
+                    userCards.setCards(cards);
+
+                    System.out.println(gameCards.getCurrentCard().getNumber());
+
+                    request.getSession().setAttribute("userCards", userCards);
+                    request.getSession().setAttribute("gameCards", gameCards);
+                    request.getSession().setAttribute("usersCards", usersCards);
+                }
+
                 switch (request.getParameter("action")) {
                     case "next": {
                         if (currentPosition == usersCards.size() - 1) {
@@ -49,19 +70,29 @@ public class Game extends HttpServlet {
                     }
 
                     case "draw": {
+                        gameCards.setCardsToDraw(Integer.parseInt(request.getParameter("cardsToDraw")));
+
                         List<Card> cardsToDraw = gameCards.getCards()
                                 .stream()
                                 .limit(gameCards.getCardsToDraw())
                                 .collect(Collectors.toList());
+
                         List<Card> remainingCards = gameCards.getCards();
                         remainingCards.subList(0, gameCards.getCardsToDraw()).clear();
                         gameCards.setCards(remainingCards);
+
                         List<Card> newUserCards = usersCards.get(currentPosition).getCards();
                         newUserCards.addAll(cardsToDraw);
                         usersCards.get(currentPosition).setCards(newUserCards);
                         gameCards.setCardsToDraw(0);
+
                         System.out.println(currentUser.getUsername() + " has " + usersCards.get(currentPosition).getCards().size());
                         System.out.print("Cards in game: " + gameCards.getCards().size());
+
+                        request.getSession().setAttribute("userCards", userCards);
+                        request.getSession().setAttribute("gameCards", gameCards);
+                        request.getSession().setAttribute("usersCards", usersCards);
+
                         break;
                     }
 
@@ -75,6 +106,12 @@ public class Game extends HttpServlet {
                                 card.getNumber().name() + " " + card.getSuit().name());
 //                    System.out.println(usersCards.get(currentPosition).getUser().getUsername() + " has " +
 //                            usersCards.get(currentPosition).getCards().size());
+
+                        /// TODO: 12/11/2019 update si in userCards la toate metodele
+
+                        request.getSession().setAttribute("userCards", userCards);
+                        request.getSession().setAttribute("gameCards", gameCards);
+                        request.getSession().setAttribute("usersCards", usersCards);
                         break;
                     }
                 }
@@ -113,12 +150,6 @@ public class Game extends HttpServlet {
                         usersCards.get(i).setCards(givenCards);
 //                        System.out.println("User cards: " + usersCards.get(i).getCards().size());
                     }
-
-                    request.getSession().removeAttribute("gameCards");
-
-                    userCards = UserCardsRepository.getInstance().getCardsForCurrentUser(currentSessionUser, roomId);
-                    gameCards = GameCardsRepository.getInstance().getByRoomId(roomId);
-                    usersCards = UserCardsRepository.getInstance().getUsersCardsForCurrentRoom(roomId);
 
                     request.getSession().setAttribute("userCards", userCards);
                     request.getSession().setAttribute("gameCards", gameCards);

@@ -15,8 +15,10 @@
 </head>
 <body>
 
-<%  Long roomId = (Long) session.getAttribute("roomId");
+<% Long roomId = (Long) session.getAttribute("roomId");
     User user = (User) session.getAttribute("currentSessionUser");
+
+    String currentUser = (String) session.getAttribute("currentUser");
     GameCards gameCards = (GameCards) session.getAttribute("gameCards");
     List<UserCards> usersCards = (List<UserCards>) session.getAttribute("usersCards");
 
@@ -26,31 +28,35 @@
 <main class="main-container">
     <div class="info">
         <button id="finish-game" class="finish-button" name="finish">Finish</button>
-        <div> Randul tau. Jocul cu id-ul <%=roomId%> unde ni s-a alaturat user-ul <%=user.getUsername()%></div>
+        <div> Randul lui <%=currentUser%> Jocul cu id-ul <%=roomId%> unde ni s-a alaturat user-ul <%=user.getUsername()%>
+        </div>
         <div></div>
     </div>
     <div class="game-wrapper">
         <div class="users">
             <table>
                 <tr>
-                    <td> <i class="fa fa-users"></i> Jucatori:</td>
+                    <td><i class="fa fa-users"></i> Jucatori:</td>
                 </tr>
-                <tr><td></td></tr>
+                <tr>
+                    <td></td>
+                </tr>
                 <%for (int i = 0; i < usersCards.size(); i++) { %>
                 <tr>
-                    <td>Jucatorul <%=i+1%> : <%=usersCards.get(i).getUser().getUsername()%></td>
+                    <td>Jucatorul <%=i + 1%> : <%=usersCards.get(i).getUser().getUsername()%>
+                    </td>
                 </tr>
                 <%}%>
             </table>
         </div>
         <div class="game">
-            <button class ="card-game">
+            <button class="card-game">
                 <span class="card-game-type"> <%=gameCards.getCurrentCard().getNumber().getNumberCode()%>
                     <%=gameCards.getCurrentCard().getSuit()%>  </span>
             </button>
         </div>
         <div class="deck">
-            <%if(gameCards.getCards().size() > 0) {%>
+            <%if ( gameCards.getCards().size() > 0 ) {%>
             <img height="200" width="150" src="resources/card-back.png"/>
             <% } else {%>
             <img height="200" width="150" src="resources/empty-deck.png"/>
@@ -66,20 +72,34 @@
             <button id="take-card">Ia carte</button>
         </div>
     </div>
+
+    <div class="error-wrapper">
+        <div id="alert" class="alert">
+            <span id="close-alert" class="close-error">&times;</span>
+            <span id="alert-message"></span>
+        </div>
+    </div>
 </main>
 <footer>
     <div class="cards-container">
-        <%for(int i = 0; i < userCards.getCards().size(); i++) {%>
-            <button class ="card-user" value = "<%=userCards.getCards().get(i)%>">
+        <%for (int i = 0; i < userCards.getCards().size(); i++) {%>
+        <button class="card-user"
+                cardId="<%=i%>"
+                cardSuit="<%=userCards.getCards().get(i).getSuit()%>"
+                cardNumber="<%=userCards.getCards().get(i).getNumber().getNumberCode()%>"
+                currentCardSuit="<%=gameCards.getCurrentCard().getSuit()%>"
+                currentCardNumber="<%=gameCards.getCurrentCard().getNumber().getNumberCode()%>">
 
-                <span class="card-user-type"> <%=userCards.getCards().get(i).getNumber().getNumberCode()%> +
-                                                <%=userCards.getCards().get(i).getSuit()%>"</span>
-            </button>
+                <span class="card-user-type"> <%=userCards.getCards().get(i).getNumber().getNumberCode()%>
+                                                <%=userCards.getCards().get(i).getSuit()%></span>
+        </button>
         <% } %>
     </div>
 </footer>
 
 <script>
+    var putCardFromDeck = document.getElementsByClassName("card-user");
+
     var next = document.getElementById("next");
     var draw = document.getElementById("draw");
     var takeCard = document.getElementById("take-card");
@@ -87,51 +107,123 @@
     var startGame = document.getElementById("start-game");
     var finishGame = document.getElementById("finish-game");
 
-    next.addEventListener('click', function () {
-            fetch('game?action=next', {
+    var closeAlert = document.getElementById("close-alert");
+    var alert = document.getElementById("alert");
+    var alertMessage = document.getElementById("alert-message");
+
+    var counterForDraw = 0;
+    var isClicked = false;
+
+   // if(isClicked === false) {
+
+        Array.from(putCardFromDeck).forEach(function (putCard) {
+            putCard.addEventListener('click', function () {
+                var cardId = putCard.getAttribute("cardId");
+                var cardSuit = putCard.getAttribute("cardSuit");
+                var cardNumber = putCard.getAttribute("cardNumber");
+                var currentCardSuit = putCard.getAttribute("currentCardSuit");
+                var currentCardNumber = putCard.getAttribute("currentCardNumber");
+
+                if (cardNumber === "Joker") {
+                    if (cardSuit !== currentCardSuit) {
+                        alert.style.opacity = "1";
+                        alertMessage.innerHTML = "Joker-ul se poate da peste aceeasi culoare. Incearca o alta carte sau ia o carte";
+                    }
+                }
+
+                else {
+                    if (cardNumber === "2") {
+                        counterForDraw += 2;
+                    }
+                    else if (cardNumber === "3") {
+                        counterForDraw += 3;
+                    }
+                    else if (cardNumber === "4") {
+                        counterForDraw = 0;
+                    }
+                    else if (cardNumber === "Joker") {
+                        if (cardSuit === "Red") {
+                            counterForDraw += 10;
+                        }
+                        else if (cardSuit === "Black") {
+                            counterForDraw += 5;
+                        }
+                    }
+
+                    // else if((cardNumber !== currentCardNumber) && (cardSuit !== currentCardSuit)) {
+                    //     alert.style.opacity = "1";
+                    //     alertMessage.innerHTML = "Numarul sau simbolul nu corespund. Incearca o alta carte sau ia o carte";
+                    // }
+
+
+                    fetch('game?cardId=' + cardId, {
+                        method: "POST"
+                    })
+                        .then(function (data) {
+                        });
+                    isClicked = true;
+                }
+            })
+        });
+
+        draw.addEventListener('click', function () {
+            fetch('game?action=draw?cardsToDraw=' + counterForDraw, {
                 method: "POST"
             })
                 .then(function (data) {
-                    //window.location.href = data.url;
-                })
-    });
+                });
+            isClicked = true;
+        });
 
-    draw.addEventListener('click', function () {
-            fetch('game?action=draw', {
-                method: "POST"
-            })
-                .then(function (data) {
-                    //window.location.href = data.url;
+        if (counterForDraw === 0) {
+            next.addEventListener('click', function () {
+                fetch('game?action=next', {
+                    method: "POST"
                 })
-    });
+                    .then(function (data) {
+                    });
+                isClicked = true;
+            });
 
-    takeCard.addEventListener('click', function () {
-            fetch('game?action=take', {
-                method: "POST"
-            })
-                .then(function (data) {
-                    //window.location.href = data.url;
+            takeCard.addEventListener('click', function () {
+                fetch('game?action=take', {
+                    method: "POST"
                 })
-    });
+                    .then(function (data) {
+                    });
+                isClicked = true;
+            });
+        }
 
-    finishGame.addEventListener('click', function () {
+        else {
+            alert.style.opacity = "1";
+            alertMessage.innerHTML = "Trebuie sa umfli si dupa poti da next!";
+        }
+
+        finishGame.addEventListener('click', function () {
             fetch('game?action=finish', {
                 method: "POST"
             })
                 .then(function (data) {
                     window.location.href = data.url;
-                })
-    });
+                });
+            isClicked = true;
+        });
 
-    startGame.addEventListener('click', function () {
+        startGame.addEventListener('click', function () {
             fetch('game?action=start', {
                 method: "POST"
             })
                 .then(function (data) {
-                    //window.location.href = data.url;
-                })
-    });
+                    startGame.style.display = "none";
+                });
+            isClicked = true;
+        });
+    //}
 
+    closeAlert.addEventListener('click', function () {
+        alert.style.opacity = "0";
+    });
 </script>
 
 </body>

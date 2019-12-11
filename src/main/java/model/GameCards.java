@@ -14,9 +14,7 @@ public class GameCards {
 
     private int cardsToDraw;
 
-    public GameCards() {
-        /// TODO: 12/8/2019 currentCard va trebui sa fie inlocuita cu o stiva sau coada cu cartile care se pun jos
-    }
+    public GameCards() { }
 
     public GameCards(long idRoom, Card currentCard, List<Card> cards, int currentPositionForUser, int cardsToDraw) {
         this.idRoom = idRoom;

@@ -1,4 +1,5 @@
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import model.*;
 import repository.GameCardsRepository;
 import repository.UserCardsRepository;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -25,21 +27,18 @@ import java.util.Random;
 public class Rooms extends HttpServlet {
 
     private Utils utils = new Utils();
-    private List<AsyncContext> contexts = new LinkedList<>();
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-        final AsyncContext asyncContext = request.startAsync(request, response);
-        asyncContext.setTimeout(10 * 60 * 1000);
-        contexts.add(asyncContext);
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // TODO: 12/11/2019 de rezolvat asta pentru refresh
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.writeValue(response.getWriter(), utils.getRooms());
+        response.getWriter().flush();
+        response.getWriter().close();
     }
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) {
-
-        List<AsyncContext> asyncContexts = new ArrayList<>(this.contexts);
-        this.contexts.clear();
-
         try {
             User currentUser = (User) request.getSession().getAttribute("currentSessionUser");
 
@@ -81,14 +80,6 @@ public class Rooms extends HttpServlet {
                 response.sendRedirect("game.jsp");
             }
 
-            for (AsyncContext asyncContext : asyncContexts) {
-                try (PrintWriter writer = asyncContext.getResponse().getWriter()) {
-                    writer.flush();
-                    asyncContext.complete();
-                } catch (Exception ex) {
-                    System.out.println(ex.getMessage());
-                }
-            }
         } catch (Throwable theException) {
             System.out.println(theException.getMessage());
         }
