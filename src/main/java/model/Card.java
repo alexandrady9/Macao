@@ -5,6 +5,8 @@ public class Card {
     private Suit suit;
     private Number number;
 
+    public Card() {}
+
     public Card(Suit suit, Number number) {
         this.suit = suit;
         this.number = number;

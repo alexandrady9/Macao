@@ -1,3 +1,4 @@
+package servlet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import model.*;
@@ -29,7 +30,7 @@ public class Rooms extends HttpServlet {
     private Utils utils = new Utils();
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // TODO: 12/11/2019 de rezolvat asta pentru refresh
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValue(response.getWriter(), utils.getRooms());

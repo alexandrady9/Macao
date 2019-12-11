@@ -111,17 +111,14 @@
     var alertMessage = document.getElementById("alert-message");
 
     var counterForDraw = 0;
-    var isClicked = false;
 
-   // if(isClicked === false) {
-
-        Array.from(putCardFromDeck).forEach(function (putCard) {
-            putCard.addEventListener('click', function () {
-                var cardId = putCard.getAttribute("cardId");
-                var cardSuit = putCard.getAttribute("cardSuit");
-                var cardNumber = putCard.getAttribute("cardNumber");
-                var currentCardSuit = putCard.getAttribute("currentCardSuit");
-                var currentCardNumber = putCard.getAttribute("currentCardNumber");
+    Array.from(putCardFromDeck).forEach(function (putCard) {
+        putCard.addEventListener('click', function () {
+            var cardId = putCard.getAttribute("cardId");
+            var cardSuit = putCard.getAttribute("cardSuit");
+            var cardNumber = putCard.getAttribute("cardNumber");
+            var currentCardSuit = putCard.getAttribute("currentCardSuit");
+            var currentCardNumber = putCard.getAttribute("currentCardNumber");
 
                 if (cardNumber === "Joker") {
                     if((currentCardSuit === "Diamond" || currentCardSuit === "Heart") && cardSuit === "Black") {
@@ -142,7 +139,6 @@
                         })
                             .then(function (data) {
                             });
-                        isClicked = true;
                     }
                 } else if(cardNumber === "2" || cardNumber === "3" || cardNumber === "4" ){
                     if (cardNumber === "2") {
@@ -172,60 +168,54 @@
             })
         });
 
-        draw.addEventListener('click', function () {
-            fetch('game?action=draw?cardsToDraw=' + counterForDraw, {
-                method: "POST"
-            })
-                .then(function (data) {
-                });
-            isClicked = true;
-        });
-
-        if (counterForDraw === 0) {
-            next.addEventListener('click', function () {
-                fetch('game?action=next', {
-                    method: "POST"
-                })
-                    .then(function (data) {
-                    });
-                isClicked = true;
+    draw.addEventListener('click', function () {
+        fetch('game?cardsToDraw=' + counterForDraw, {
+            method: "POST"
+        })
+            .then(function (data) {
             });
+    });
 
-            takeCard.addEventListener('click', function () {
-                fetch('game?action=take', {
-                    method: "POST"
-                })
-                    .then(function (data) {
-                    });
-                isClicked = true;
+    if (counterForDraw === 0) {
+        next.addEventListener('click', function () {
+            fetch('game?action=next', {
+                method: "POST"
+            })
+                .then(function (data) {
+                });
+        });
+
+        takeCard.addEventListener('click', function () {
+            fetch('game?action=take', {
+                method: "POST"
+            })
+                .then(function (data) {
+                });
+        });
+    }
+
+    else {
+        alert.style.opacity = "1";
+        alertMessage.innerHTML = "Trebuie sa umfli si dupa poti da next!";
+    }
+
+    finishGame.addEventListener('click', function () {
+        fetch('game?action=finish', {
+            method: "POST"
+        })
+            .then(function (data) {
+                window.location.href = data.url;
             });
-        }
+    });
 
-        else {
-            alert.style.opacity = "1";
-            alertMessage.innerHTML = "Trebuie sa umfli si dupa poti da next!";
-        }
+    startGame.addEventListener('click', function () {
+        fetch('game?action=start', {
+            method: "POST"
+        })
+            .then(function (data) {
+            });
+    });
 
-        finishGame.addEventListener('click', function () {
-            fetch('game?action=finish', {
-                method: "POST"
-            })
-                .then(function (data) {
-                    window.location.href = data.url;
-                });
-            isClicked = true;
-        });
-
-        startGame.addEventListener('click', function () {
-            fetch('game?action=start', {
-                method: "POST"
-            })
-                .then(function (data) {
-                    startGame.style.display = "none";
-                });
-            isClicked = true;
-        });
-    //}
 
     closeAlert.addEventListener('click', function () {
         alert.style.opacity = "0";

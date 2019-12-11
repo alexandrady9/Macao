@@ -1,3 +1,5 @@
+package servlet;
+
 import connection.Utils;
 import model.Card;
 import model.GameCards;
@@ -149,7 +151,7 @@ public class Game extends HttpServlet {
                         userCards.setCards(givenCards);
 //                        System.out.println(usersCards.get(i).getUser().getUsername() + ": ");
 //                        System.out.println("Cards: " + givenCards.size());
-//                        System.out.println("Game cards: " + gameCards.getCards().size());
+//                        System.out.println("servlet.Game cards: " + gameCards.getCards().size());
 //                        System.out.println("User cards: " + usersCards.get(i).getCards().size());
                     }
 

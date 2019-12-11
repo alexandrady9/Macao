@@ -28,7 +28,6 @@ public class GameCardsRepository implements Repository<GameCards> {
 
     @Override
     public void update(GameCards oldItem, GameCards newItem) {
-        /// TODO: 12/8/2019 functie pe care sa o apelam cand trebuie sa updatam listele, cand se pune o carte jos si cand se ia din pachet
     }
 
     @Override

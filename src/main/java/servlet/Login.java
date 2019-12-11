@@ -1,3 +1,5 @@
+package servlet;
+
 import connection.Utils;
 import model.*;
 import repository.GameCardsRepository;
