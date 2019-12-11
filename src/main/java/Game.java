@@ -38,8 +38,6 @@ public class Game extends HttpServlet {
             User currentUser = usersCards.get(currentPosition).getUser();
             System.out.println("current user:" + currentUser.getUsername());
 
-            request.getSession().setAttribute("currentUser", currentUser.getUsername());
-
             if(currentSessionUser.getUsername().equals(currentUser.getUsername())) {
                 if(request.getParameter("cardId") != null) {
                     int cardId = Integer.parseInt(request.getParameter("cardId"));
@@ -76,7 +74,6 @@ public class Game extends HttpServlet {
                                 .stream()
                                 .limit(gameCards.getCardsToDraw())
                                 .collect(Collectors.toList());
-
                         List<Card> remainingCards = gameCards.getCards();
                         remainingCards.subList(0, gameCards.getCardsToDraw()).clear();
                         gameCards.setCards(remainingCards);
@@ -84,6 +81,7 @@ public class Game extends HttpServlet {
                         List<Card> newUserCards = usersCards.get(currentPosition).getCards();
                         newUserCards.addAll(cardsToDraw);
                         usersCards.get(currentPosition).setCards(newUserCards);
+                        userCards.setCards(newUserCards);
                         gameCards.setCardsToDraw(0);
 
                         System.out.println(currentUser.getUsername() + " has " + usersCards.get(currentPosition).getCards().size());
@@ -102,6 +100,8 @@ public class Game extends HttpServlet {
                         List<Card> cards = usersCards.get(currentPosition).getCards();
                         cards.add(card);
                         usersCards.get(currentPosition).setCards(cards);
+                        userCards.setCards(cards);
+
                         System.out.println(usersCards.get(currentPosition).getUser().getUsername() + " take " +
                                 card.getNumber().name() + " " + card.getSuit().name());
 //                    System.out.println(usersCards.get(currentPosition).getUser().getUsername() + " has " +
@@ -136,18 +136,20 @@ public class Game extends HttpServlet {
                 }
 
                 case "start": {
+                    System.out.println("Start");
                     for (int i = 0; i < usersCards.size(); i++) {
                         List<Card> givenCards = gameCards.getCards()
                                 .stream()
                                 .limit(5)
                                 .collect(Collectors.toList());
-//                        System.out.println(usersCards.get(i).getUser().getUsername() + ": ");
-//                        System.out.println("Cards: " + givenCards.size());
                         List<Card> remainingCards = gameCards.getCards();
                         remainingCards.subList(0, 5).clear();
                         gameCards.setCards(remainingCards);
-//                        System.out.println("Game cards: " + gameCards.getCards().size());
                         usersCards.get(i).setCards(givenCards);
+                        userCards.setCards(givenCards);
+//                        System.out.println(usersCards.get(i).getUser().getUsername() + ": ");
+//                        System.out.println("Cards: " + givenCards.size());
+//                        System.out.println("Game cards: " + gameCards.getCards().size());
 //                        System.out.println("User cards: " + usersCards.get(i).getCards().size());
                     }
 

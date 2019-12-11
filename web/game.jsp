@@ -17,8 +17,6 @@
 
 <% Long roomId = (Long) session.getAttribute("roomId");
     User user = (User) session.getAttribute("currentSessionUser");
-
-    String currentUser = (String) session.getAttribute("currentUser");
     GameCards gameCards = (GameCards) session.getAttribute("gameCards");
     List<UserCards> usersCards = (List<UserCards>) session.getAttribute("usersCards");
 
@@ -28,7 +26,8 @@
 <main class="main-container">
     <div class="info">
         <button id="finish-game" class="finish-button" name="finish">Finish</button>
-        <div> Randul lui <%=currentUser%> Jocul cu id-ul <%=roomId%> unde ni s-a alaturat user-ul <%=user.getUsername()%>
+        <div> Randul lui <%=usersCards.get(gameCards.getCurrentPositionForUser()).getUser().getUsername()%>
+            Jocul cu id-ul <%=roomId%> unde ni s-a alaturat user-ul <%=user.getUsername()%>
         </div>
         <div></div>
     </div>
@@ -68,7 +67,7 @@
         <button id="start-game" class="start-game-button" name="start">Start</button>
         <div class="actions">
             <button id="next">Urmatorul</button>
-            <button id="draw">Umflatura</button>
+            <button id="draw">Umfla</button>
             <button id="take-card">Ia carte</button>
         </div>
     </div>
