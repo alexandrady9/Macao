@@ -10,9 +10,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Level;
 
 
 @WebServlet(name = "login",
@@ -54,13 +56,13 @@ public class Login extends HttpServlet {
             currentUser = utils.checkLogin(currentUser.getUsername(), currentUser.getPassword());
 
             if (currentUser != null) {
-                ConfigureLog.configureLogFile().info("User " + currentUser.getUsername() + " has been successfully logged in.");
+                Logging.log(Level.INFO, "User " + currentUser.getUsername() + " has been successfully logged in.");
                 setAttributeForWindow(request, currentUser, rooms);
                 response.sendRedirect("rooms_view.jsp");
             }
 
             else {
-                ConfigureLog.configureLogFile().info("User " + currentUser.getUsername() + " invalid.");
+                //ConfigureLog.configureLogFile().info("User " + currentUser.getUsername() + " invalid.");
                 response.sendRedirect("invalidLogin.jsp");
             }
         }

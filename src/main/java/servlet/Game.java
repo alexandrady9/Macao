@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 
@@ -39,7 +40,7 @@ public class Game extends HttpServlet {
 
             int currentPosition = gameCards.getCurrentPositionForUser();
             User currentUser = usersCards.get(currentPosition).getUser();
-            ConfigureLog.configureLogFile().info("Current user: " + currentUser.getUsername());
+            Logging.log(Level.INFO, "Current user: " + currentUser.getUsername());
 
             if(currentSessionUser.getUsername().equals(currentUser.getUsername())) {
                 if(request.getParameter("cardId") != null) {
@@ -53,35 +54,19 @@ public class Game extends HttpServlet {
                     usersCards.get(currentPosition).setCards(cards);
                     userCards.setCards(cards);
 
-                    ConfigureLog.configureLogFile().info("User " + currentUser.getUsername() + " put down " +
+                    if(cardToPut.getNumber().getNumberCode().equals("2"))
+                        gameCards.setCardsToDraw(gameCards.getCardsToDraw() + 2);
+                    else if(cardToPut.getNumber().getNumberCode().equals("3"))
+                        gameCards.setCardsToDraw(gameCards.getCardsToDraw() + 3);
+                    else if(cardToPut.getNumber().getNumberCode().equals("Joker") && cardToPut.getSuit().name().equals("Red"))
+                        gameCards.setCardsToDraw(gameCards.getCardsToDraw() + 10);
+                    else if(cardToPut.getNumber().getNumberCode().equals("Joker") && cardToPut.getSuit().name().equals("Black"))
+                        gameCards.setCardsToDraw(gameCards.getCardsToDraw() + 5);
+                    else if(cardToPut.getNumber().getNumberCode().equals("4"))
+                        gameCards.setCardsToDraw(0);
+
+                    Logging.log(Level.INFO, "User " + currentUser.getUsername() + " put down " +
                             cardToPut.getNumber().getNumberCode() + " " + cardToPut.getSuit().name());
-
-                    request.getSession().setAttribute("userCards", userCards);
-                    request.getSession().setAttribute("gameCards", gameCards);
-                    request.getSession().setAttribute("usersCards", usersCards);
-                }
-
-                else if(request.getParameter("cardsToDraw") != null) {
-                    gameCards.setCardsToDraw(Integer.parseInt(request.getParameter("cardsToDraw")));
-
-                    List<Card> cardsToDraw = gameCards.getCards()
-                            .stream()
-                            .limit(gameCards.getCardsToDraw())
-                            .collect(Collectors.toList());
-                    List<Card> remainingCards = gameCards.getCards();
-                    remainingCards.subList(0, gameCards.getCardsToDraw()).clear();
-                    gameCards.setCards(remainingCards);
-
-                    List<Card> newUserCards = usersCards.get(currentPosition).getCards();
-                    newUserCards.addAll(cardsToDraw);
-                    usersCards.get(currentPosition).setCards(newUserCards);
-                    userCards.setCards(newUserCards);
-                    gameCards.setCardsToDraw(0);
-
-                    System.out.println(currentUser.getUsername() + " has " + usersCards.get(currentPosition).getCards().size());
-                    System.out.print("Cards in game: " + gameCards.getCards().size());
-
-                    ConfigureLog.configureLogFile().info("User " + currentUser.getUsername() + " drawn " + cardsToDraw + " cards.");
 
                     request.getSession().setAttribute("userCards", userCards);
                     request.getSession().setAttribute("gameCards", gameCards);
@@ -99,14 +84,10 @@ public class Game extends HttpServlet {
                         remainingCards.subList(0, 5).clear();
                         gameCards.setCards(remainingCards);
                         usersCards.get(i).setCards(givenCards);
-                        userCards.setCards(givenCards);
-//                        System.out.println(usersCards.get(i).getUser().getUsername() + ": ");
-//                        System.out.println("Cards: " + givenCards.size());
-//                        System.out.println("servlet.Game cards: " + gameCards.getCards().size());
-//                        System.out.println("User cards: " + usersCards.get(i).getCards().size());
                     }
+                    userCards.setCards(usersCards.get(0).getCards());
 
-                    ConfigureLog.configureLogFile().info("User " + currentUser.getUsername() + " has started the game.");
+                    Logging.log(Level.INFO, "User " + currentUser.getUsername() + " has started the game.");
                     gameCards.setIsStartGame(1);
 
                     request.getSession().setAttribute("userCards", userCards);
@@ -121,7 +102,8 @@ public class Game extends HttpServlet {
                         } else {
                             gameCards.setCurrentPositionForUser(currentPosition + 1);
                         }
-                        ConfigureLog.configureLogFile().info("User " + currentUser.getUsername() + " press next button.");
+
+                        Logging.log(Level.INFO, "User " + currentUser.getUsername() + " press next button.");
                         break;
                     }
 
@@ -136,13 +118,41 @@ public class Game extends HttpServlet {
                         System.out.println(usersCards.get(currentPosition).getUser().getUsername() + " take " +
                                 card.getNumber().name() + " " + card.getSuit().name());
 
-                        ConfigureLog.configureLogFile().info("User " + currentUser.getUsername() + " took " +
+                        Logging.log(Level.INFO, "User " + currentUser.getUsername() + " took " +
                                 card.getNumber().name() + " " + card.getSuit().name());
 
                         request.getSession().setAttribute("userCards", userCards);
                         request.getSession().setAttribute("gameCards", gameCards);
                         request.getSession().setAttribute("usersCards", usersCards);
                         break;
+                    }
+
+                    case "draw": {
+
+                        System.out.println("Cards to draw: " + gameCards.getCardsToDraw());
+
+                        List<Card> cardsToDraw = gameCards.getCards()
+                                .stream()
+                                .limit(gameCards.getCardsToDraw())
+                                .collect(Collectors.toList());
+                        List<Card> remainingCards = gameCards.getCards();
+                        remainingCards.subList(0, gameCards.getCardsToDraw()).clear();
+                        gameCards.setCards(remainingCards);
+
+                        List<Card> newUserCards = usersCards.get(currentPosition).getCards();
+                        newUserCards.addAll(cardsToDraw);
+                        usersCards.get(currentPosition).setCards(newUserCards);
+                        userCards.setCards(newUserCards);
+                        gameCards.setCardsToDraw(0);
+
+                        System.out.println(currentUser.getUsername() + " has " + usersCards.get(currentPosition).getCards().size());
+                        System.out.print("Cards in game: " + gameCards.getCards().size());
+
+                        Logging.log(Level.INFO, "User " + currentUser.getUsername() + " drawn " + cardsToDraw + " cards.");
+
+                        request.getSession().setAttribute("userCards", userCards);
+                        request.getSession().setAttribute("gameCards", gameCards);
+                        request.getSession().setAttribute("usersCards", usersCards);
                     }
                 }
             } else {
@@ -158,7 +168,7 @@ public class Game extends HttpServlet {
                     GameCardsRepository.getInstance().remove(gameCards);
                     usersCards.forEach(userCards1 -> UserCardsRepository.getInstance().remove(userCards1));
 
-                    ConfigureLog.configureLogFile().info("User " + currentUser.getUsername() + " has finished the game.");
+                    Logging.log(Level.INFO, "User " + currentUser.getUsername() + " has finished the game.");
 
                     HttpSession session = request.getSession(true);
                     session.setAttribute("currentSessionUser", currentSessionUser);

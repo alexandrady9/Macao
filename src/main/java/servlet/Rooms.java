@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Level;
 
 
 @WebServlet(urlPatterns = {"/rooms"},  asyncSupported=true)
@@ -64,7 +65,7 @@ public class Rooms extends HttpServlet {
                         .getInstance()
                         .add(new UserCards(createdRoom.getId(), currentUser, new ArrayList<>()));
 
-                ConfigureLog.configureLogFile().info("A new room(id - " + createdRoom.getId() + ") was created by " + currentUser.getUsername());
+                Logging.log(Level.INFO, "A new room(id - " + createdRoom.getId() + ") was created by " + currentUser.getUsername());
 
                 setAttributeForWindow(request, currentUser, createdRoom.getId());
                 response.sendRedirect("game.jsp");
@@ -79,8 +80,7 @@ public class Rooms extends HttpServlet {
                         .getInstance()
                         .add(new UserCards(roomId, currentUser, new ArrayList<>()));
 
-                ConfigureLog.configureLogFile().info("User " + currentUser.getUsername() + " joined the room with id " + roomId);
-
+                Logging.log(Level.INFO, "User " + currentUser.getUsername() + " joined the room with id " + roomId);
                 setAttributeForWindow(request, currentUser, roomId);
                 response.sendRedirect("game.jsp");
 

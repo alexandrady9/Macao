@@ -75,7 +75,7 @@
         <% } %>
         <div class="actions">
             <button id="next">Next</button>
-            <button id="draw" value="<%=gameCards.getCardsToDraw()%>">Draw</button>
+            <button id="draw" cardsToDraw="<%=gameCards.getCardsToDraw()%>">Draw</button>
             <button id="take-card">Take card</button>
         </div>
     </div>
@@ -119,7 +119,8 @@
     var alert = document.getElementById("alert");
     var alertMessage = document.getElementById("alert-message");
 
-    var counterForDraw = 0;
+    var counterForDraw;
+    var cardsToDraw = draw.getAttribute("cardsToDraw");
 
     Array.from(putCardFromDeck).forEach(function (putCard) {
         putCard.addEventListener('click', function () {
@@ -137,12 +138,12 @@
                     alert.style.opacity = "1";
                     alertMessage.innerHTML = "Joker-ul se poate da doar peste aceeasi culoare. Incearca o alta carte sau ia o carte.";
                 } else {
-                    if (cardSuit === "Red") {
-                        counterForDraw += 10;
-                    }
-                    else if (cardSuit === "Black") {
-                        counterForDraw += 5;
-                    }
+                    // if (cardSuit === "Red") {
+                    //     counterForDraw += 10;
+                    // }
+                    // else if (cardSuit === "Black") {
+                    //     counterForDraw += 5;
+                    // }
                     fetch('game?cardId=' + cardId, {
                         method: "POST"
                     })
@@ -150,13 +151,13 @@
                         });
                 }
             } else if (cardNumber === "2" || cardNumber === "3" || cardNumber === "4") {
-                if (cardNumber === "2") {
-                    counterForDraw += 2;
-                } else if (cardNumber === "3") {
-                    counterForDraw += 3;
-                } else if (cardNumber === "4") {
-                    counterForDraw = 0;
-                }
+                // if (cardNumber === "2") {
+                //     counterForDraw += 2;
+                // } else if (cardNumber === "3") {
+                //     counterForDraw += 3;
+                // } else if (cardNumber === "4") {
+                //     counterForDraw = 0;
+                // }
                 fetch('game?cardId=' + cardId, {
                     method: "POST"
                 })
@@ -176,14 +177,19 @@
     });
 
     draw.addEventListener('click', function () {
-        fetch('game?cardsToDraw=' + counterForDraw, {
-            method: "POST"
-        })
-            .then(function (data) {
-            });
+        if(cardsToDraw !== "0") {
+            fetch('game?action=draw', {
+                method: "POST"
+            })
+                .then(function (data) {
+                });
+        } else {
+            alert.style.opacity = "1";
+            alertMessage.innerHTML = "Nu sunt carti de umflat!";
+        }
     });
 
-    if (counterForDraw === 0) {
+    //if (counterForDraw === 0) {
         next.addEventListener('click', function () {
             fetch('game?action=next', {
                 method: "POST"
@@ -199,12 +205,11 @@
                 .then(function (data) {
                 });
         });
-    }
-
-    else {
-        alert.style.opacity = "1";
-        alertMessage.innerHTML = "Trebuie sa umfli si dupa poti da next!";
-    }
+    // }
+    // else {
+    //     alert.style.opacity = "1";
+    //     alertMessage.innerHTML = "Trebuie sa umfli si dupa poti da next!";
+    // }
 
     finishGame.addEventListener('click', function () {
         fetch('game?action=finish', {
