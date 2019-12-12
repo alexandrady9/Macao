@@ -49,7 +49,7 @@ public class Login extends HttpServlet {
             Card currentCard = cards.get(rand.nextInt(cards.size()));
             cards.remove(currentCard);
 
-            rooms.forEach(room -> GameCardsRepository.getInstance().add(new GameCards(room.getId(), currentCard, cards, 0, 0)));
+            rooms.forEach(room -> GameCardsRepository.getInstance().add(new GameCards(room.getId(), currentCard, cards, 0, 0, 0)));
 
             currentUser = utils.checkLogin(currentUser.getUsername(), currentUser.getPassword());
 

@@ -42,7 +42,7 @@ public class GameTests extends Mockito {
         when(session.getAttribute("roomId")).thenReturn(1L);
         when(session.getAttribute("currentSessionUser")).thenReturn(currentUser);
         when(session.getAttribute("userCards")).thenReturn(UserCardsRepository.getInstance().getCardsForCurrentUser(currentUser,1));
-        when(session.getAttribute("gameCards")).thenReturn(new GameCards(1, new Card(), new ArrayList<>(), 0, 0));
+        when(session.getAttribute("gameCards")).thenReturn(new GameCards(1, new Card(), new ArrayList<>(), 0, 0, 0));
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("action")).thenReturn("finish");
 

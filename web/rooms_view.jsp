@@ -46,11 +46,10 @@
         <button class="new-game-button" type="submit" name="newGame">New Game</button>
     </form>
 </footer>
-
 <script>
-    var joinButtons = document.getElementsByClassName("join");
     var closeAlert = document.getElementById("close-alert");
     var alert = document.getElementById("alert");
+    var joinButtons = document.getElementsByClassName("join");
 
     Array.from(joinButtons).forEach(function (button) {
         button.addEventListener('click', function () {
@@ -69,9 +68,6 @@
         })
     });
 
-    closeAlert.addEventListener('click', function () {
-        alert.style.opacity = "0";
-    });
 
     function getRooms() {
         fetch('rooms', {
@@ -94,8 +90,12 @@
 
     setInterval(getRooms, 1000);
 
-</script>
 
+    closeAlert.addEventListener('click', function () {
+        alert.style.opacity = "0";
+    });
+
+</script>
 </body>
 
 </html>

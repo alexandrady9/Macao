@@ -25,7 +25,7 @@ public class GameCardsRepositoryTests extends Mockito {
     @Test
     public void getByRoomIdTest() {
         // Given
-        GameCards actual = new GameCards(1, new Card(),new ArrayList<>(), 1, 0);
+        GameCards actual = new GameCards(1, new Card(),new ArrayList<>(), 1, 0, 0);
         when(gameCardsRepository.getByRoomId(1)).thenReturn(actual);
 
         // When

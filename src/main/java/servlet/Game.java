@@ -61,6 +61,59 @@ public class Game extends HttpServlet {
                     request.getSession().setAttribute("usersCards", usersCards);
                 }
 
+                else if(request.getParameter("cardsToDraw") != null) {
+                    gameCards.setCardsToDraw(Integer.parseInt(request.getParameter("cardsToDraw")));
+
+                    List<Card> cardsToDraw = gameCards.getCards()
+                            .stream()
+                            .limit(gameCards.getCardsToDraw())
+                            .collect(Collectors.toList());
+                    List<Card> remainingCards = gameCards.getCards();
+                    remainingCards.subList(0, gameCards.getCardsToDraw()).clear();
+                    gameCards.setCards(remainingCards);
+
+                    List<Card> newUserCards = usersCards.get(currentPosition).getCards();
+                    newUserCards.addAll(cardsToDraw);
+                    usersCards.get(currentPosition).setCards(newUserCards);
+                    userCards.setCards(newUserCards);
+                    gameCards.setCardsToDraw(0);
+
+                    System.out.println(currentUser.getUsername() + " has " + usersCards.get(currentPosition).getCards().size());
+                    System.out.print("Cards in game: " + gameCards.getCards().size());
+
+                    ConfigureLog.configureLogFile().info("User " + currentUser.getUsername() + " drawn " + cardsToDraw + " cards.");
+
+                    request.getSession().setAttribute("userCards", userCards);
+                    request.getSession().setAttribute("gameCards", gameCards);
+                    request.getSession().setAttribute("usersCards", usersCards);
+                }
+
+                else if (request.getParameter("isStarted") != null) {
+                    System.out.println("Start");
+                    for (int i = 0; i < usersCards.size(); i++) {
+                        List<Card> givenCards = gameCards.getCards()
+                                .stream()
+                                .limit(5)
+                                .collect(Collectors.toList());
+                        List<Card> remainingCards = gameCards.getCards();
+                        remainingCards.subList(0, 5).clear();
+                        gameCards.setCards(remainingCards);
+                        usersCards.get(i).setCards(givenCards);
+                        userCards.setCards(givenCards);
+//                        System.out.println(usersCards.get(i).getUser().getUsername() + ": ");
+//                        System.out.println("Cards: " + givenCards.size());
+//                        System.out.println("servlet.Game cards: " + gameCards.getCards().size());
+//                        System.out.println("User cards: " + usersCards.get(i).getCards().size());
+                    }
+
+                    ConfigureLog.configureLogFile().info("User " + currentUser.getUsername() + " has started the game.");
+                    gameCards.setIsStartGame(1);
+
+                    request.getSession().setAttribute("userCards", userCards);
+                    request.getSession().setAttribute("gameCards", gameCards);
+                    request.getSession().setAttribute("usersCards", usersCards);
+                }
+
                 switch (request.getParameter("action")) {
                     case "next": {
                         if (currentPosition == usersCards.size() - 1) {
@@ -69,35 +122,6 @@ public class Game extends HttpServlet {
                             gameCards.setCurrentPositionForUser(currentPosition + 1);
                         }
                         ConfigureLog.configureLogFile().info("User " + currentUser.getUsername() + " press next button.");
-                        break;
-                    }
-
-                    case "draw": {
-                        gameCards.setCardsToDraw(Integer.parseInt(request.getParameter("cardsToDraw")));
-
-                        List<Card> cardsToDraw = gameCards.getCards()
-                                .stream()
-                                .limit(gameCards.getCardsToDraw())
-                                .collect(Collectors.toList());
-                        List<Card> remainingCards = gameCards.getCards();
-                        remainingCards.subList(0, gameCards.getCardsToDraw()).clear();
-                        gameCards.setCards(remainingCards);
-
-                        List<Card> newUserCards = usersCards.get(currentPosition).getCards();
-                        newUserCards.addAll(cardsToDraw);
-                        usersCards.get(currentPosition).setCards(newUserCards);
-                        userCards.setCards(newUserCards);
-                        gameCards.setCardsToDraw(0);
-
-                        System.out.println(currentUser.getUsername() + " has " + usersCards.get(currentPosition).getCards().size());
-                        System.out.print("Cards in game: " + gameCards.getCards().size());
-
-                        ConfigureLog.configureLogFile().info("User " + currentUser.getUsername() + " drawn " + cardsToDraw + " cards.");
-
-                        request.getSession().setAttribute("userCards", userCards);
-                        request.getSession().setAttribute("gameCards", gameCards);
-                        request.getSession().setAttribute("usersCards", usersCards);
-
                         break;
                     }
 
@@ -140,32 +164,6 @@ public class Game extends HttpServlet {
                     session.setAttribute("currentSessionUser", currentSessionUser);
                     session.setAttribute("rooms", utils.getRooms());
                     response.sendRedirect("rooms_view.jsp");
-                    break;
-                }
-
-                case "start": {
-                    System.out.println("Start");
-                    for (int i = 0; i < usersCards.size(); i++) {
-                        List<Card> givenCards = gameCards.getCards()
-                                .stream()
-                                .limit(5)
-                                .collect(Collectors.toList());
-                        List<Card> remainingCards = gameCards.getCards();
-                        remainingCards.subList(0, 5).clear();
-                        gameCards.setCards(remainingCards);
-                        usersCards.get(i).setCards(givenCards);
-                        userCards.setCards(givenCards);
-//                        System.out.println(usersCards.get(i).getUser().getUsername() + ": ");
-//                        System.out.println("Cards: " + givenCards.size());
-//                        System.out.println("servlet.Game cards: " + gameCards.getCards().size());
-//                        System.out.println("User cards: " + usersCards.get(i).getCards().size());
-                    }
-
-                    ConfigureLog.configureLogFile().info("User " + currentUser.getUsername() + " has started the game.");
-
-                    request.getSession().setAttribute("userCards", userCards);
-                    request.getSession().setAttribute("gameCards", gameCards);
-                    request.getSession().setAttribute("usersCards", usersCards);
                     break;
                 }
             }

@@ -1,7 +1,7 @@
-<%@ page import="model.User" %>
 <%@ page import="model.GameCards" %>
-<%@ page import="java.util.List" %>
+<%@ page import="model.User" %>
 <%@ page import="model.UserCards" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -64,10 +64,18 @@
     </div>
 
     <div class="actions-wrapper">
-        <button id="start-game" class="start-game-button" name="start">Start</button>
+        <%if ( gameCards.getIsStartGame() == 0 ) {%>
+
+        <button id="start-game"
+                currentUser="<%=usersCards.get(gameCards.getCurrentPositionForUser()).getUser().getId()%>"
+                currentSessionUser="<%=user.getId()%>"
+                class="start-game-button" name="start">Start
+        </button>
+
+        <% } %>
         <div class="actions">
             <button id="next">Next</button>
-            <button id="draw">Draw</button>
+            <button id="draw" value="<%=gameCards.getCardsToDraw()%>">Draw</button>
             <button id="take-card">Take card</button>
         </div>
     </div>
@@ -97,6 +105,7 @@
 </footer>
 
 <script>
+
     var putCardFromDeck = document.getElementsByClassName("card-user");
 
     var next = document.getElementById("next");
@@ -120,53 +129,51 @@
             var currentCardSuit = putCard.getAttribute("currentCardSuit");
             var currentCardNumber = putCard.getAttribute("currentCardNumber");
 
-                if (cardNumber === "Joker") {
-                    if((currentCardSuit === "Diamond" || currentCardSuit === "Heart") && cardSuit === "Black") {
-                        alert.style.opacity = "1";
-                        alertMessage.innerHTML = "Joker-ul se poate da doar peste aceeasi culoare. Incearca o alta carte sau ia o carte.";
-                    } else if((currentCardSuit === "Club" || currentCardSuit === "Spade") && cardSuit === "Red") {
-                        alert.style.opacity = "1";
-                        alertMessage.innerHTML = "Joker-ul se poate da doar peste aceeasi culoare. Incearca o alta carte sau ia o carte.";
-                    } else {
-                        if (cardSuit === "Red") {
-                            counterForDraw += 10;
-                        }
-                        else if (cardSuit === "Black") {
-                            counterForDraw += 5;
-                        }
-                        fetch('game?cardId=' + cardId, {
-                            method: "POST"
-                        })
-                            .then(function (data) {
-                            });
-                    }
-                } else if(cardNumber === "2" || cardNumber === "3" || cardNumber === "4" ){
-                    if (cardNumber === "2") {
-                        counterForDraw += 2;
-                    } else if (cardNumber === "3") {
-                        counterForDraw += 3;
-                    } else if (cardNumber === "4") {
-                        counterForDraw = 0;
-                    }
-                    fetch('game?cardId=' + cardId, {
-                        method: "POST"
-                    })
-                        .then(function (data) {
-                        });
-                    isClicked = true;
-                } else if((cardNumber !== currentCardNumber) && (cardSuit !== currentCardSuit)) {
+            if (cardNumber === "Joker") {
+                if ((currentCardSuit === "Diamond" || currentCardSuit === "Heart") && cardSuit === "Black") {
                     alert.style.opacity = "1";
-                    alertMessage.innerHTML = "Numarul sau simbolul nu corespund. Incearca o alta carte sau ia o carte.";
+                    alertMessage.innerHTML = "Joker-ul se poate da doar peste aceeasi culoare. Incearca o alta carte sau ia o carte.";
+                } else if ((currentCardSuit === "Club" || currentCardSuit === "Spade") && cardSuit === "Red") {
+                    alert.style.opacity = "1";
+                    alertMessage.innerHTML = "Joker-ul se poate da doar peste aceeasi culoare. Incearca o alta carte sau ia o carte.";
                 } else {
+                    if (cardSuit === "Red") {
+                        counterForDraw += 10;
+                    }
+                    else if (cardSuit === "Black") {
+                        counterForDraw += 5;
+                    }
                     fetch('game?cardId=' + cardId, {
                         method: "POST"
                     })
                         .then(function (data) {
                         });
-                    isClicked = true;
                 }
-            })
-        });
+            } else if (cardNumber === "2" || cardNumber === "3" || cardNumber === "4") {
+                if (cardNumber === "2") {
+                    counterForDraw += 2;
+                } else if (cardNumber === "3") {
+                    counterForDraw += 3;
+                } else if (cardNumber === "4") {
+                    counterForDraw = 0;
+                }
+                fetch('game?cardId=' + cardId, {
+                    method: "POST"
+                })
+                    .then(function (data) {
+                    });
+            } else if ((cardNumber !== currentCardNumber) && (cardSuit !== currentCardSuit)) {
+                alert.style.opacity = "1";
+                alertMessage.innerHTML = "Numarul sau simbolul nu corespund. Incearca o alta carte sau ia o carte.";
+            } else {
+                fetch('game?cardId=' + cardId, {
+                    method: "POST"
+                })
+                    .then(function (data) {
+                    });
+            }
+        })
+    });
 
     draw.addEventListener('click', function () {
         fetch('game?cardsToDraw=' + counterForDraw, {
@@ -209,17 +216,28 @@
     });
 
     startGame.addEventListener('click', function () {
-        fetch('game?action=start', {
-            method: "POST"
-        })
-            .then(function (data) {
-            });
+        var currentUser = startGame.getAttribute("currentUser");
+        var currentSessionUser = startGame.getAttribute("currentSessionUser");
+
+        if (currentUser === currentSessionUser) {
+            fetch('game?isStarted= ' + 1, {
+                method: "POST"
+            })
+                .then(function (data) {
+                });
+        }
+
+        else {
+            alert.style.opacity = "1";
+            alertMessage.innerHTML = "Numai organizatorul poate sa dea start la joc!";
+        }
     });
 
 
     closeAlert.addEventListener('click', function () {
         alert.style.opacity = "0";
     });
+
 </script>
 
 </body>

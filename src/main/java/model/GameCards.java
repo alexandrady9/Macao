@@ -14,14 +14,17 @@ public class GameCards {
 
     private int cardsToDraw;
 
+    private int isStartGame;
+
     public GameCards() { }
 
-    public GameCards(long idRoom, Card currentCard, List<Card> cards, int currentPositionForUser, int cardsToDraw) {
+    public GameCards(long idRoom, Card currentCard, List<Card> cards, int currentPositionForUser, int cardsToDraw, int isStartGame) {
         this.idRoom = idRoom;
         this.currentCard = currentCard;
         this.cards = cards;
         this.currentPositionForUser = currentPositionForUser;
         this.cardsToDraw = cardsToDraw;
+        this.isStartGame = isStartGame;
     }
 
     public long getRoom() {
@@ -63,5 +66,13 @@ public class GameCards {
 
     public void setCardsToDraw(int cardsToDraw) {
         this.cardsToDraw = cardsToDraw;
+    }
+
+    public int getIsStartGame() {
+        return isStartGame;
+    }
+
+    public void setIsStartGame(int isStartGame) {
+        this.isStartGame = isStartGame;
     }
 }
