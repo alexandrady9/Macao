@@ -1,4 +1,4 @@
-package model;
+package logger;
 
 import java.io.IOException;
 import java.util.logging.FileHandler;
@@ -8,13 +8,13 @@ import java.util.logging.SimpleFormatter;
 
 public class Logging {
 
-    static Logger logger;
-    public FileHandler fileHandler;
-    SimpleFormatter formatter;
+    private static Logger logger;
+    private FileHandler fileHandler;
+    private SimpleFormatter formatter;
 
-    public Logging() throws IOException{
+    private Logging() throws IOException{
         logger = Logger.getLogger(Logging.class.getName());
-        fileHandler = new FileHandler("E:\\Facultate\\Anul III\\TW\\Macao\\src\\main\\java\\logger\\LogFile.log",true);
+        fileHandler = new FileHandler("C:\\Users\\nica_\\Desktop\\MI\\Anul III\\Semestrul I\\TW\\Macao\\src\\main\\java\\logger\\LogFile.log",true);
         formatter = new SimpleFormatter();
         fileHandler.setFormatter(formatter);
         logger.addHandler(fileHandler);

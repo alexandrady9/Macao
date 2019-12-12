@@ -1,6 +1,7 @@
 package servlet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import logger.Logging;
 import model.*;
 import repository.GameCardsRepository;
 import repository.UserCardsRepository;

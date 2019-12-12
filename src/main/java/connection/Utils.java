@@ -28,7 +28,7 @@ public class Utils {
         try {
             users.clear();
             Statement myStatement = Objects.requireNonNull(ConnectionDB.getInstance().createConnection()).createStatement();
-            String sqlInsert = "SELECT * from user";
+            String sqlInsert = Queries.getUsers;
 
             ResultSet rs = myStatement.executeQuery(sqlInsert);
             while (rs.next()) {
@@ -57,7 +57,7 @@ public class Utils {
         try {
             rooms.clear();
             Statement myStatement = Objects.requireNonNull(ConnectionDB.getInstance().createConnection()).createStatement();
-            String sqlInsert = "SELECT * from room";
+            String sqlInsert = Queries.getRooms;
 
             ResultSet rs = myStatement.executeQuery(sqlInsert);
             while (rs.next()) {
@@ -112,11 +112,11 @@ public class Utils {
     public void createRoom(long idHost) {
         try {
             Statement statement = Objects.requireNonNull(ConnectionDB.getInstance().createConnection()).createStatement();
-            String query = "INSERT INTO room (`idHost`, `joinedUsers`) VALUES('" + idHost + "', '" + 1 + "')";
+            String query = Queries.insertRoom(idHost);
             statement.executeUpdate(query);
 
             Room room = getLastRoomCreated();
-            String query2 = "UPDATE user set idRoom ='" +  room.getId() + "'where id ='" + idHost + "'";
+            String query2 = Queries.updateUserWhenCreateRoom(idHost, room);
             statement.executeUpdate(query2);
             statement.close();
         } catch (SQLException e) {
@@ -141,10 +141,10 @@ public class Utils {
     public void joinRoom(long userId, long roomId) {
         try {
             Statement statement = Objects.requireNonNull(ConnectionDB.getInstance().createConnection()).createStatement();
-            String query = "UPDATE room set joinedUsers = joinedUsers + 1 where id = '" + roomId + "'";
+            String query = Queries.updateJoinedUsersFromRoom(roomId);
             statement.executeUpdate(query);
 
-            String query2 = "UPDATE user set idRoom ='" +  roomId + "'where id ='" + userId + "'";
+            String query2 = Queries.updateUserWhenJoinToRoom(roomId, userId);
             statement.executeUpdate(query2);
             statement.close();
         } catch (SQLException e) {
@@ -162,7 +162,7 @@ public class Utils {
             Statement statement = Objects.requireNonNull(ConnectionDB.getInstance().createConnection()).createStatement();
 
             joinedUsers.forEach(joinedUser -> {
-                String query2 = "UPDATE user set idRoom = null where id ='" + joinedUser.getId() + "'";
+                String query2 = Queries.updateUserWhenFinishGame(joinedUser);
                 try {
                     statement.executeUpdate(query2);
                 } catch (SQLException e) {
@@ -171,7 +171,7 @@ public class Utils {
 
             });
 
-            String query = "DELETE from room where id = '" + roomId + "'";
+            String query = Queries.deleteRoom(roomId);
             statement.executeUpdate(query);
 
             statement.close();

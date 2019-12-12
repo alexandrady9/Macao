@@ -126,6 +126,10 @@ body {
     display: flex;
     align-items: flex-end;
     justify-content: flex-end;
+    position: absolute;
+    content: "";
+    bottom: 78px;
+    right: 0;
 }
 
 .alert {

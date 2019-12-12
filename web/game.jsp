@@ -72,12 +72,39 @@
                 class="start-game-button" name="start">Start
         </button>
 
-        <% } %>
+
+        <div class="actions">
+            <button id="next"
+                    disabled
+                    style="background-color: #BEBEBE">Next
+            </button>
+            <button id="draw"
+                    cardsToDraw="null"
+                    disabled
+                    style="background-color: #BEBEBE">Draw
+            </button>
+            <button id="take-card"
+                    disabled
+                    style="background-color: #BEBEBE">Take card
+            </button>
+        </div>
+        <% } else {%>
+        <button id="start-game"
+                currentUser="null"
+                currentSessionUser="null"
+                class="start-game-button"
+                name="start"
+                disabled
+                style="background-color: #BEBEBE">Start
+        </button>
+
         <div class="actions">
             <button id="next">Next</button>
             <button id="draw" cardsToDraw="<%=gameCards.getCardsToDraw()%>">Draw</button>
             <button id="take-card">Take card</button>
         </div>
+
+        <% } %>
     </div>
 
     <div class="error-wrapper">
@@ -91,6 +118,8 @@
     <div class="cards-container">
         <%for (int i = 0; i < userCards.getCards().size(); i++) {%>
         <button class="card-user"
+                isStarted="<%=gameCards.getIsStartGame()%>"
+                numberOfCards="<%=userCards.getCards().size()%>"
                 cardId="<%=i%>"
                 cardSuit="<%=userCards.getCards().get(i).getSuit()%>"
                 cardNumber="<%=userCards.getCards().get(i).getNumber().getNumberCode()%>"
@@ -119,11 +148,23 @@
     var alert = document.getElementById("alert");
     var alertMessage = document.getElementById("alert-message");
 
-    var counterForDraw;
     var cardsToDraw = draw.getAttribute("cardsToDraw");
 
     Array.from(putCardFromDeck).forEach(function (putCard) {
         putCard.addEventListener('click', function () {
+            var numberOfCards = putCard.getAttribute("numberOfCards");
+            var isStarted = putCard.getAttribute("isStarted");
+
+            if (numberOfCards === 0 && isStarted === 1) {
+                alert.style.opacity = "1";
+                alertMessage.innerHTML = "Ai castigat!!!" + "<i class=\"fab fa-angellist\"></i>";
+                alert.style.backgroundColor = "#27ae60";
+                startGame.disabled = false;
+                next.disabled = true;
+                draw.disabled = true;
+                takeCard.disabled = true;
+            }
+
             var cardId = putCard.getAttribute("cardId");
             var cardSuit = putCard.getAttribute("cardSuit");
             var cardNumber = putCard.getAttribute("cardNumber");
@@ -177,7 +218,7 @@
     });
 
     draw.addEventListener('click', function () {
-        if(cardsToDraw !== "0") {
+        if (cardsToDraw !== "0") {
             fetch('game?action=draw', {
                 method: "POST"
             })
@@ -190,21 +231,21 @@
     });
 
     //if (counterForDraw === 0) {
-        next.addEventListener('click', function () {
-            fetch('game?action=next', {
-                method: "POST"
-            })
-                .then(function (data) {
-                });
-        });
+    next.addEventListener('click', function () {
+        fetch('game?action=next', {
+            method: "POST"
+        })
+            .then(function (data) {
+            });
+    });
 
-        takeCard.addEventListener('click', function () {
-            fetch('game?action=take', {
-                method: "POST"
-            })
-                .then(function (data) {
-                });
-        });
+    takeCard.addEventListener('click', function () {
+        fetch('game?action=take', {
+            method: "POST"
+        })
+            .then(function (data) {
+            });
+    });
     // }
     // else {
     //     alert.style.opacity = "1";
