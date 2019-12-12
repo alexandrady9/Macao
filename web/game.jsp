@@ -75,6 +75,8 @@
 
         <div class="actions">
             <button id="next"
+                    isStarted="null"
+                    numberOfCards="null"
                     disabled
                     style="background-color: #BEBEBE">Next
             </button>
@@ -99,7 +101,9 @@
         </button>
 
         <div class="actions">
-            <button id="next">Next</button>
+            <button id="next"
+                    isStarted="<%=gameCards.getIsStartGame()%>"
+                    numberOfCards="<%=userCards.getCards().size()%>">Next</button>
             <button id="draw" cardsToDraw="<%=gameCards.getCardsToDraw()%>">Draw</button>
             <button id="take-card">Take card</button>
         </div>
@@ -118,8 +122,6 @@
     <div class="cards-container">
         <%for (int i = 0; i < userCards.getCards().size(); i++) {%>
         <button class="card-user"
-                isStarted="<%=gameCards.getIsStartGame()%>"
-                numberOfCards="<%=userCards.getCards().size()%>"
                 cardId="<%=i%>"
                 cardSuit="<%=userCards.getCards().get(i).getSuit()%>"
                 cardNumber="<%=userCards.getCards().get(i).getNumber().getNumberCode()%>"
@@ -152,19 +154,6 @@
 
     Array.from(putCardFromDeck).forEach(function (putCard) {
         putCard.addEventListener('click', function () {
-            var numberOfCards = putCard.getAttribute("numberOfCards");
-            var isStarted = putCard.getAttribute("isStarted");
-
-            if (numberOfCards === 0 && isStarted === 1) {
-                alert.style.opacity = "1";
-                alertMessage.innerHTML = "Ai castigat!!!" + "<i class=\"fab fa-angellist\"></i>";
-                alert.style.backgroundColor = "#27ae60";
-                startGame.disabled = false;
-                next.disabled = true;
-                draw.disabled = true;
-                takeCard.disabled = true;
-            }
-
             var cardId = putCard.getAttribute("cardId");
             var cardSuit = putCard.getAttribute("cardSuit");
             var cardNumber = putCard.getAttribute("cardNumber");
@@ -241,6 +230,27 @@
 
     //if (counterForDraw === 0) {
     next.addEventListener('click', function () {
+        var numberOfCards = next.getAttribute("numberOfCards");
+        var isStarted = next.getAttribute("isStarted");
+
+        if (numberOfCards === "0" && isStarted === "1") {
+            alert.style.opacity = "1";
+            alertMessage.innerHTML = "Ai castigat!!!";
+            alert.style.backgroundColor = "#27ae60";
+
+            startGame.style.disabled = false;
+            startGame.style.backgroundColor = "#27ae60";
+
+            next.style.disabled = true;
+            next.style.backgroundColor = "#BEBEBE";
+
+            draw.disabled = true;
+            draw.style.backgroundColor = "#BEBEBE";
+
+            takeCard.disabled = true;
+            takeCard.style.backgroundColor = "#BEBEBE";
+        }
+
         fetch('game?action=next', {
             method: "POST"
         })
