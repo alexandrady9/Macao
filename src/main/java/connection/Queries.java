@@ -25,11 +25,15 @@ class Queries {
         return "UPDATE user set idRoom ='" +  roomId + "'where id ='" + userId + "'";
     }
 
-    static String updateUserWhenFinishGame(User joinedUser) {
-        return "UPDATE user set idRoom = null where id ='" + joinedUser.getId() + "'";
-    }
-
     static String deleteRoom(long roomId) {
         return  "DELETE from room where id = '" + roomId + "'";
+    }
+
+    static String updateRoomWhenUserLeave(long roomId) {
+        return "UPDATE room set joinedUsers = joinedUsers - 1 where id = '" + roomId + "'";
+    }
+
+    static String deleteRoomFromUser(long userId) {
+        return "UPDATE user set idRoom = NULL where id ='" + userId + "'";
     }
 }

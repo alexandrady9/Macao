@@ -100,9 +100,6 @@ class GameUtils {
         usersCards.get(currentPosition).setCards(cards);
         userCards.setCards(cards);
 
-        System.out.println(usersCards.get(currentPosition).getUser().getUsername() + " take " +
-                card.getNumber().name() + " " + card.getSuit().name());
-
         Logging.log(Level.INFO, "User " + currentUser.getUsername() + " took " +
                 card.getNumber().name() + " " + card.getSuit().name());
 
@@ -117,8 +114,6 @@ class GameUtils {
                            GameCards gameCards,
                            int currentPosition,
                            User currentUser) {
-        System.out.println("Cards to draw: " + gameCards.getCardsToDraw());
-
         List<Card> cardsToDraw = gameCards.getCards()
                 .stream()
                 .limit(gameCards.getCardsToDraw())
@@ -132,9 +127,6 @@ class GameUtils {
         usersCards.get(currentPosition).setCards(newUserCards);
         userCards.setCards(newUserCards);
         gameCards.setCardsToDraw(0);
-
-        System.out.println(currentUser.getUsername() + " has " + usersCards.get(currentPosition).getCards().size());
-        System.out.print("Cards in game: " + gameCards.getCards().size());
 
         Logging.log(Level.INFO, "User " + currentUser.getUsername() + " drawn " + cardsToDraw + " cards.");
 

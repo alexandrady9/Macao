@@ -26,7 +26,7 @@
 <main class="main-container">
     <div class="info">
         <button id="finish-game" class="finish-button" name="finish">Finish</button>
-        <div> It's your turn,  <%=usersCards.get(gameCards.getCurrentPositionForUser()).getUser().getUsername()%>.
+        <div> <%=usersCards.get(gameCards.getCurrentPositionForUser()).getUser().getUsername()%> turn.
             Game with id <%=roomId%>, where the user <%=user.getUsername()%> joined us.
         </div>
         <div></div>
@@ -42,7 +42,7 @@
                 </tr>
                 <%for (int i = 0; i < usersCards.size(); i++) { %>
                 <tr>
-                    <td>Player <%=i + 1%> : <%=usersCards.get(i).getUser().getUsername()%>
+                    <td>Player <%=i + 1%> : <%=usersCards.get(i).getUser().getUsername()%> (<%=usersCards.get(i).getUser().getWonGames()%>)
                     </td>
                 </tr>
                 <%}%>
@@ -179,12 +179,6 @@
                     alert.style.opacity = "1";
                     alertMessage.innerHTML = "Joker-ul se poate da doar peste aceeasi culoare. Incearca o alta carte sau ia o carte.";
                 } else {
-                    // if (cardSuit === "Red") {
-                    //     counterForDraw += 10;
-                    // }
-                    // else if (cardSuit === "Black") {
-                    //     counterForDraw += 5;
-                    // }
                     fetch('game?cardId=' + cardId, {
                         method: "POST"
                     })
@@ -192,18 +186,33 @@
                         });
                 }
             } else if (cardNumber === "2" || cardNumber === "3" || cardNumber === "4") {
-                // if (cardNumber === "2") {
-                //     counterForDraw += 2;
-                // } else if (cardNumber === "3") {
-                //     counterForDraw += 3;
-                // } else if (cardNumber === "4") {
-                //     counterForDraw = 0;
-                // }
                 fetch('game?cardId=' + cardId, {
                     method: "POST"
                 })
                     .then(function (data) {
                     });
+            }  else if(currentCardNumber === "Joker" && currentCardSuit === "Red") {
+                if(cardSuit === "Club" || cardSuit === "Spade") {
+                    alert.style.opacity = "1";
+                    alertMessage.innerHTML = "Peste Joker trebuie pusa o carte de aceeasi culoare.";
+                } else {
+                    fetch('game?cardId=' + cardId, {
+                        method: "POST"
+                    })
+                        .then(function (data) {
+                        });
+                }
+            } else if(currentCardNumber === "Joker" && currentCardSuit === "Black") {
+                if(cardSuit === "Diamond" || cardSuit === "Heart") {
+                    alert.style.opacity = "1";
+                    alertMessage.innerHTML = "Peste Joker trebuie pusa o carte de aceeasi culoare.";
+                } else {
+                    fetch('game?cardId=' + cardId, {
+                        method: "POST"
+                    })
+                        .then(function (data) {
+                        });
+                }
             } else if ((cardNumber !== currentCardNumber) && (cardSuit !== currentCardSuit)) {
                 alert.style.opacity = "1";
                 alertMessage.innerHTML = "Numarul sau simbolul nu corespund. Incearca o alta carte sau ia o carte.";
@@ -264,7 +273,6 @@
     startGame.addEventListener('click', function () {
         var currentUser = startGame.getAttribute("currentUser");
         var currentSessionUser = startGame.getAttribute("currentSessionUser");
-
         if (currentUser === currentSessionUser) {
             fetch('game?isStarted= ' + 1, {
                 method: "POST"

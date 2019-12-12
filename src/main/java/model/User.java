@@ -9,14 +9,16 @@ public class User implements Serializable {
     private String username;
     private String password;
     private long idRoom;
+    private int wonGames;
 
     public User() { }
 
-    public User(long id, String username, String password, long idRoom) {
+    public User(long id, String username, String password, long idRoom, int wonGames) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.idRoom = idRoom;
+        this.wonGames = wonGames;
     }
 
     public long getId() {
@@ -49,5 +51,13 @@ public class User implements Serializable {
 
     public void setIdRoom(long idRoom) {
         this.idRoom = idRoom;
+    }
+
+    public int getWonGames() {
+        return wonGames;
+    }
+
+    public void setWonGames(int wonGames) {
+        this.wonGames = wonGames;
     }
 }

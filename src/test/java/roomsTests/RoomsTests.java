@@ -34,7 +34,7 @@ public class RoomsTests extends Mockito {
         //Given
         doNothing()
                 .when(session)
-                .setAttribute("currentSessionUser", new User(1, "diana", "diana", 1));
+                .setAttribute("currentSessionUser", new User(1, "diana", "diana", 1, 3));
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("roomId")).thenReturn("1");
 

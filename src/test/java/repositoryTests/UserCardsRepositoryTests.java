@@ -25,7 +25,7 @@ public class UserCardsRepositoryTests extends Mockito {
     @Test
     public void getUserCardsForCurrentRoomTest() {
         // Given
-        User user = new User(1, "diana", "diana", 1);
+        User user = new User(1, "diana", "diana", 1, 3);
         UserCards actual = new UserCards(1, user, new ArrayList<>());
         when(userCardsRepository.getUsersCardsForCurrentRoom(1))
                 .thenReturn(new ArrayList<UserCards>() {{ add(actual);}});
@@ -40,7 +40,7 @@ public class UserCardsRepositoryTests extends Mockito {
     @Test
     public void getCardsForCurrentUserTest() {
         // Given
-        User currentUser = new User(1, "diana", "diana", 1);
+        User currentUser = new User(1, "diana", "diana", 1, 3);
         UserCards actual = new UserCards(1, currentUser, new ArrayList<>());
         when(userCardsRepository.getCardsForCurrentUser(currentUser, 1))
                 .thenReturn((actual));

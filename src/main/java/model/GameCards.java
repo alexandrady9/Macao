@@ -6,12 +6,21 @@ public class GameCards {
 
     private long idRoom;
 
+    /***
+     * the last card that was put down
+     */
     private Card currentCard;
 
+    /***
+     * the cards from deck that have remained to be taken
+     */
     private List<Card> cards;
 
     private int currentPositionForUser;
 
+    /***
+     * the number of cards that the user must draw
+     */
     private int cardsToDraw;
 
     private int isStartGame;

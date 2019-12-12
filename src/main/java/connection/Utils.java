@@ -36,7 +36,8 @@ public class Utils {
                 String name = rs.getString("username");
                 String password = rs.getString("password");
                 int idRoom = rs.getInt("idRoom");
-                User user = new User(id, name, password, idRoom);
+                int wonGames = rs.getInt("wonGames");
+                User user = new User(id, name, password, idRoom, wonGames);
                 users.add(user);
             }
             rs.close();
@@ -153,27 +154,33 @@ public class Utils {
     }
 
     /**
-     * delete the specified room and the connections between it and the participating users
+     * delete the specified room
      * @param roomId
-     * @param joinedUsers
      */
-    public void deletedRoom(long roomId, List<User> joinedUsers) {
+    public void deleteRoom(long roomId) {
         try {
             Statement statement = Objects.requireNonNull(ConnectionDB.getInstance().createConnection()).createStatement();
-
-            joinedUsers.forEach(joinedUser -> {
-                String query2 = Queries.updateUserWhenFinishGame(joinedUser);
-                try {
-                    statement.executeUpdate(query2);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-
-            });
-
             String query = Queries.deleteRoom(roomId);
             statement.executeUpdate(query);
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
+    /**
+     * delete the connections between it and the user who want to leave
+     * @param roomId
+     * @param userId
+     */
+    public void removeUserFromRoom(long roomId, long userId) {
+        try {
+            Statement statement = Objects.requireNonNull(ConnectionDB.getInstance().createConnection()).createStatement();
+            String query = Queries.updateRoomWhenUserLeave(roomId);
+            statement.executeUpdate(query);
+
+            String query2 = Queries.deleteRoomFromUser(userId);
+            statement.executeUpdate(query2);
             statement.close();
         } catch (SQLException e) {
             e.printStackTrace();

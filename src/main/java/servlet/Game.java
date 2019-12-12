@@ -73,13 +73,14 @@ public class Game extends HttpServlet {
 
             switch (request.getParameter("action")) {
                 case "finish": {
-                    List<User> joinedUsers = new ArrayList<>();
-                    usersCards.forEach(userCards1 -> joinedUsers.add(userCards1.getUser()));
-                    utils.deletedRoom(roomId, joinedUsers);
+                    utils.removeUserFromRoom(roomId, currentUser.getId());
 
-                    GameCardsRepository.getInstance().remove(gameCards);
-                    usersCards.forEach(userCards1 -> UserCardsRepository.getInstance().remove(userCards1));
-
+                    if(usersCards.size() == 1) {
+                        utils.deleteRoom(roomId);
+                        GameCardsRepository.getInstance().remove(gameCards);
+                    }
+                    UserCardsRepository.getInstance().remove(usersCards.get(currentPosition));
+                    
                     Logging.log(Level.INFO, "User " + currentUser.getUsername() + " has finished the game.");
 
                     HttpSession session = request.getSession(true);

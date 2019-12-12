@@ -36,7 +36,7 @@ public class GameTests extends Mockito {
     @Test
     public void postMethodTest() {
         //Given
-        User currentUser = new User(1, "diana", "diana", 1);
+        User currentUser = new User(1, "diana", "diana", 1, 3);
         UserCardsRepository.getInstance().add(new UserCards(1, currentUser, new ArrayList<>()));
 
         when(session.getAttribute("roomId")).thenReturn(1L);
